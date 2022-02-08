@@ -9,7 +9,7 @@ module.exports = {
         requireConfigFile: false,
         ecmaVersion: 2020,
     },
-    extends: ['plugin:vue/essential', '@vue/airbnb', 'prettier'],
+    extends: ['plugin:vue/essential', '@vue/airbnb'], //'prettier'
     parser: 'vue-eslint-parser',
     plugins: [],
     rules: {
