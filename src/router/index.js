@@ -1,14 +1,20 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Home from '../views/Home.vue';
+import Login from '../views/authentication/Login.vue';
 
 Vue.use(VueRouter);
-
-const Home = undefined;
 
 const routes = [
     {
         path: '/',
+        name: 'home',
         component: Home,
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
     },
 ];
 
