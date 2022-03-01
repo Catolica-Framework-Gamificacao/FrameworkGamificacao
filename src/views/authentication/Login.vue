@@ -3,7 +3,10 @@
 </template>
 
 <script>
+import LoginForm from '../../components/authentication/LoginForm.vue';
+
 export default {
+    components: { LoginForm },
     data: () => ({
         authenticated: false,
         form: {
