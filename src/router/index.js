@@ -15,6 +15,9 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login,
+        meta: {
+            hideMainNavigation: true,
+        },
     },
 ];
 

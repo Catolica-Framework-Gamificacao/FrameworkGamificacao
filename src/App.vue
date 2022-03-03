@@ -1,11 +1,20 @@
 <template>
     <div id="app">
-        <div id="nav">
-            <router-link to="/">Home</router-link>
-        </div>
-        <router-view />
+        <Navbar :items="items" v-if="!$route.meta.hideMainNavigation" />
+        <router-view></router-view>
     </div>
 </template>
+
+<script>
+import Navbar from './components/Navbar.vue';
+
+export default {
+    components: { Navbar },
+    data: () => ({
+        items: [{ title: 'Home', icon: '', route: '/' }],
+    }),
+};
+</script>
 
 <style lang="scss">
 #app {

@@ -1,11 +1,5 @@
 <template>
-    <v-card
-        class="mx-auto rounded-xl"
-        opacity="1"
-        dark
-        max-width="50%"
-        elevation="24"
-    >
+    <v-card class="rounded-xl" outlined dark>
         <v-card-title>
             <span class="text-h6 font-weight-light">Log in</span>
         </v-card-title>
@@ -46,3 +40,9 @@ export default {
     }),
 };
 </script>
+
+<style scoped>
+.card {
+    background-color: red;
+}
+</style>
