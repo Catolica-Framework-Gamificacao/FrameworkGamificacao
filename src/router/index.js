@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/authentication/Login.vue';
+import Ranking from '../views/Ranking.vue';
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,11 @@ const routes = [
         meta: {
             hideMainNavigation: true,
         },
+    },
+    {
+        path: '/ranking',
+        name: 'ranking',
+        component: Ranking,
     },
 ];
 

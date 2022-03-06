@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <Navbar :items="items" v-if="!$route.meta.hideMainNavigation" />
+        <Navbar :items="items" v-if="!$route.meta.hideMainNavigation"></Navbar>
         <router-view></router-view>
     </div>
 </template>
@@ -11,7 +11,10 @@ import Navbar from './components/Navbar.vue';
 export default {
     components: { Navbar },
     data: () => ({
-        items: [{ title: 'Home', icon: '', route: '/' }],
+        items: [
+            { title: 'Home', icon: '', route: '/' },
+            { title: 'Ranking', icon: '', route: '/ranking' },
+        ],
     }),
 };
 </script>
@@ -23,18 +26,5 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-}
-
-#nav {
-    padding: 30px;
-
-    a {
-        font-weight: bold;
-        color: #2c3e50;
-
-        &.router-link-exact-active {
-            color: #42b983;
-        }
-    }
 }
 </style>
