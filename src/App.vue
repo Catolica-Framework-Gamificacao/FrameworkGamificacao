@@ -1,8 +1,17 @@
 <template>
-    <div id="app">
-        <Navbar :items="items" v-if="!$route.meta.hideMainNavigation"></Navbar>
-        <router-view></router-view>
-    </div>
+    <v-app>
+        <div id="app">
+            <Navbar
+                :items="items"
+                v-if="!$route.meta.hideMainNavigation"
+            ></Navbar>
+            <v-main>
+                <v-container fluid>
+                    <router-view></router-view>
+                </v-container>
+            </v-main>
+        </div>
+    </v-app>
 </template>
 
 <script>
