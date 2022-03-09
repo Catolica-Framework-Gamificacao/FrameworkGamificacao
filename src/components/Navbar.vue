@@ -1,5 +1,5 @@
 <template>
-    <v-navigation-drawer permanent>
+    <div>
         <v-list-item>
             <v-list-item-content>
                 <v-list-item-title class="text-h6"> User </v-list-item-title>
@@ -28,7 +28,7 @@
                 </v-list-item-content>
             </v-list-item>
         </v-list>
-    </v-navigation-drawer>
+    </div>
 </template>
 
 <script>

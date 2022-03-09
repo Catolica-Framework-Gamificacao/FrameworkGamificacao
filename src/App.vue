@@ -1,23 +1,21 @@
 <template>
     <v-app>
-        <div id="app">
-            <Navbar
-                :items="items"
-                v-if="!$route.meta.hideMainNavigation"
-            ></Navbar>
-            <v-main>
-                <v-container fluid>
-                    <router-view></router-view>
-                </v-container>
-            </v-main>
-        </div>
+        <v-navigation-drawer app v-if="!$route.meta.hideMainNavigation">
+            <Navbar :items="items"></Navbar>
+        </v-navigation-drawer>
+        <v-main fluid>
+            <v-container>
+                <router-view></router-view>
+            </v-container>
+        </v-main>
     </v-app>
 </template>
 
 <script>
-import Navbar from './components/Navbar.vue';
+import Navbar from '@/components/Navbar.vue';
 
 export default {
+    name: 'App',
     components: { Navbar },
     data: () => ({
         items: [
@@ -25,6 +23,14 @@ export default {
             { title: 'Ranking', icon: '', route: '/ranking' },
         ],
     }),
+    watch: {
+        $route: {
+            immediate: true,
+            handler(to) {
+                document.title = to.meta.title || 'Ludus';
+            },
+        },
+    },
 };
 </script>
 

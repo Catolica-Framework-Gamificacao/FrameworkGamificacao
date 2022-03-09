@@ -6,17 +6,23 @@ import Ranking from '../views/Ranking.vue';
 
 Vue.use(VueRouter);
 
+const APPLICATION_NAME = 'Ludus';
+
 const routes = [
     {
         path: '/',
         name: 'home',
         component: Home,
+        meta: {
+            title: APPLICATION_NAME,
+        },
     },
     {
         path: '/login',
         name: 'login',
         component: Login,
         meta: {
+            title: 'Login',
             hideMainNavigation: true,
         },
     },
@@ -27,10 +33,8 @@ const routes = [
     },
 ];
 
-const router = new VueRouter({
+export default new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes,
 });
-
-export default router;
