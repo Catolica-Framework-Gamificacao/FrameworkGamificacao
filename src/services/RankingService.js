@@ -1,4 +1,13 @@
+import axios from 'axios';
+import _ from 'lodash';
+
 export default class RankingService {
+    PATH = '/ranking';
+
+    static prepare(position) {
+        return position;
+    }
+
     static getDefaultTableHeaders() {
         return [
             {
@@ -26,5 +35,8 @@ export default class RankingService {
                 value: 'pontuacao',
             },
         ];
+    }
+            });
+        return ranking;
     }
 }

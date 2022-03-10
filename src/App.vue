@@ -1,6 +1,10 @@
 <template>
     <v-app>
-        <v-navigation-drawer app v-if="!$route.meta.hideMainNavigation">
+        <v-navigation-drawer
+            permanent
+            app
+            v-if="!$route.meta.hideMainNavigation"
+        >
             <Navbar :items="items"></Navbar>
         </v-navigation-drawer>
         <v-main fluid>
@@ -19,8 +23,8 @@ export default {
     components: { Navbar },
     data: () => ({
         items: [
-            { title: 'Home', icon: '', route: '/' },
-            { title: 'Ranking', icon: '', route: '/ranking' },
+            { title: 'Home', icon: 'mdi-home-variant-outline', route: '/' },
+            { title: 'Ranking', icon: 'mdi-table-large', route: '/ranking' },
         ],
     }),
     watch: {
