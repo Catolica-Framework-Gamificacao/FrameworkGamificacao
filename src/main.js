@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import VueToastr from 'vue-toastr';
+import toastrConfiguration from '@/plugins/toastr';
 import vuetify from '@/plugins/vuetify';
 import axios from 'axios';
 import router from '@/router';
@@ -7,6 +9,7 @@ import App from './App.vue';
 axios.defaults.baseURL = 'localhost:5555';
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
+Vue.use(VueToastr, toastrConfiguration);
 
 new Vue({
     router,
