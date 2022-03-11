@@ -1,26 +1,18 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
-import Login from '../views/authentication/Login.vue';
-import Ranking from '../views/Ranking.vue';
 
 Vue.use(VueRouter);
-
-const APPLICATION_NAME = 'Ludus';
 
 const routes = [
     {
         path: '/',
         name: 'home',
-        component: Home,
-        meta: {
-            title: APPLICATION_NAME,
-        },
+        component: () => import('../views/Home.vue'),
     },
     {
         path: '/login',
         name: 'login',
-        component: Login,
+        component: () => import('../views/authentication/Login.vue'),
         meta: {
             title: 'Login',
             hideMainNavigation: true,
@@ -29,7 +21,7 @@ const routes = [
     {
         path: '/ranking',
         name: 'ranking',
-        component: Ranking,
+        component: () => import('../views/Ranking.vue'),
     },
 ];
 

@@ -18,6 +18,8 @@
 <script>
 import Navbar from '@/components/Navbar.vue';
 
+export const APPLICATION_NAME = 'Ludus';
+
 export default {
     name: 'App',
     components: { Navbar },
@@ -31,7 +33,7 @@ export default {
         $route: {
             immediate: true,
             handler(to) {
-                document.title = to.meta.title || 'Ludus';
+                document.title = to.meta.title || APPLICATION_NAME;
             },
         },
     },
