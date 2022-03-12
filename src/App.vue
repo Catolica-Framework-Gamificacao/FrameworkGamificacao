@@ -27,6 +27,11 @@ export default {
         items: [
             { title: 'Home', icon: 'mdi-home-variant-outline', route: '/' },
             { title: 'Ranking', icon: 'mdi-table-large', route: '/ranking' },
+            {
+                title: 'Minhas turmas',
+                icon: 'mdi-notebook-multiple',
+                route: '/turmas',
+            },
         ],
     }),
     watch: {

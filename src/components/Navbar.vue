@@ -2,7 +2,9 @@
     <div>
         <v-list-item>
             <v-list-item-content>
-                <v-list-item-title class="text-h6"> User </v-list-item-title>
+                <v-list-item-title class="text-h6">
+                    <span>User</span>
+                </v-list-item-title>
                 <v-list-item-subtitle> Ludus &copy;</v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
@@ -38,6 +40,11 @@ export default {
         items: {
             type: Array,
             required: true,
+        },
+        mini: {
+            type: Boolean,
+            required: false,
+            default: false,
         },
     },
     data: () => ({}),

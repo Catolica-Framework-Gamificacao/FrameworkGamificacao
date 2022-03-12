@@ -7,12 +7,12 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: () => import('../views/Home.vue'),
+        component: () => import('@/views/Home.vue'),
     },
     {
         path: '/login',
         name: 'login',
-        component: () => import('../views/authentication/Login.vue'),
+        component: () => import('@/views/authentication/Login.vue'),
         meta: {
             title: 'Login',
             hideMainNavigation: true,
@@ -21,7 +21,12 @@ const routes = [
     {
         path: '/ranking',
         name: 'ranking',
-        component: () => import('../views/Ranking.vue'),
+        component: () => import('@/views/Ranking.vue'),
+    },
+    {
+        path: '/turmas',
+        name: 'turmas',
+        component: () => import('@/views/classes/ClassConfiguration.vue'),
     },
 ];
 

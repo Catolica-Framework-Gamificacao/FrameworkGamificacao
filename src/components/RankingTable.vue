@@ -22,6 +22,7 @@
 import _ from 'lodash';
 import GoBackButton from '@/components/buttons/GoBackButton.vue';
 import RankingService from '@/services/RankingService';
+import RankingUtils from '@/utils/RankingUtils';
 
 export default {
     components: {
@@ -29,7 +30,7 @@ export default {
     },
     data: () => ({
         items: [],
-        headers: RankingService.getDefaultTableHeaders(),
+        headers: RankingUtils.getDefaultTableHeaders(),
     }),
     mounted() {
         this.loadRanking();
