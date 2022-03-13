@@ -1,22 +1,33 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import Home from '@/views/Home.vue';
+import Login from '@/views/authentication/Login.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/',
-        name: 'home',
-        component: () => import('@/views/Home.vue'),
-    },
-    {
         path: '/login',
         name: 'login',
-        component: () => import('@/views/authentication/Login.vue'),
+        component: Login,
         meta: {
             title: 'Login',
             hideMainNavigation: true,
         },
+    },
+    {
+        path: '/cadastro',
+        name: 'cadastro',
+        component: null,
+        meta: {
+            title: 'Ludus - Cadastro',
+            hideMainNavigation: true,
+        },
+    },
+    {
+        path: '/',
+        name: 'home',
+        component: Home,
     },
     {
         path: '/ranking',
@@ -24,14 +35,46 @@ const routes = [
         component: () => import('@/views/Ranking.vue'),
     },
     {
+        path: '/disciplinas',
+        name: 'disciplinas',
+        component: () => import('@/views/configuration/SubjectConfiguration.vue'),
+    },
+    {
+        path: '/alunos',
+        name: 'alunos',
+        component: () => import('@/views/configuration/StudentConfiguration.vue'),
+    },
+    {
         path: '/turmas',
         name: 'turmas',
-        component: () => import('@/views/classes/ClassConfiguration.vue'),
+        component: () => import('@/views/configuration/ClassConfiguration.vue'),
+    },
+    {
+        path: '*',
+        name: '404',
+        component: () => import('@/views/shared/PageNotFound.vue'),
+        meta: {
+            title: 'Página não encontrada',
+            hideMainNavigation: true,
+        },
     },
 ];
 
-export default new VueRouter({
+const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes,
 });
+
+router.beforeEach((to, from, next) => {
+    const publicRoutes = ['/login', '/register', '/home'];
+    const authRequired = !publicRoutes.includes(to.path);
+    const loggedIn = true; // vuex, localStorage.getItem('user'), etc...
+    if (authRequired && !loggedIn) {
+        next('/login');
+    } else {
+        next();
+    }
+});
+
+export default router;

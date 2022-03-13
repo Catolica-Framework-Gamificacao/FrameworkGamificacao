@@ -1,10 +1,6 @@
 <template>
     <v-app>
-        <v-navigation-drawer
-            permanent
-            app
-            v-if="!$route.meta.hideMainNavigation"
-        >
+        <v-navigation-drawer permanent app v-if="!$route.meta.hideMainNavigation">
             <Navbar :items="items"></Navbar>
         </v-navigation-drawer>
         <v-main fluid>
@@ -28,8 +24,18 @@ export default {
             { title: 'Home', icon: 'mdi-home-variant-outline', route: '/' },
             { title: 'Ranking', icon: 'mdi-table-large', route: '/ranking' },
             {
-                title: 'Minhas turmas',
-                icon: 'mdi-notebook-multiple',
+                title: 'Disciplinas',
+                icon: 'mdi-school',
+                route: '/disciplinas',
+            },
+            {
+                title: 'Alunos',
+                icon: 'mdi-account-multiple',
+                route: '/alunos',
+            },
+            {
+                title: 'Turmas',
+                icon: 'mdi-human-male-board',
                 route: '/turmas',
             },
         ],
