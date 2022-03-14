@@ -6,7 +6,7 @@ export default class ClassService {
     }
 
     static async loadData() {
-        // Fake data
+        // ! Fake data
         return [
             {
                 id: 0,

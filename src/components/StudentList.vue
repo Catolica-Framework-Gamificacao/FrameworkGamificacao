@@ -12,8 +12,8 @@
         item-key="posicao"
         class="elevation-1"
     >
-        <template #[`item.exibir`]="{ item }">
-            {{ item.exibir ? 'Sim' : 'Não' }}
+        <template #[`item.showOnRanking`]="{ item }">
+            {{ item.showOnRanking ? 'Sim' : 'Não' }}
         </template>
         <template #[`item.actions`]="{ item }">
             <v-btn icon color="blue" @click="edit(item)">

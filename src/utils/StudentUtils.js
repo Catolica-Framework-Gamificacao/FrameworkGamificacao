@@ -11,19 +11,19 @@ export default class StudentUtils {
                 text: 'Nome',
                 align: 'center',
                 sortable: true,
-                value: 'nome',
+                value: 'name',
             },
             {
                 text: 'Pontos',
                 align: 'center',
                 sortable: true,
-                value: 'pontos',
+                value: 'points',
             },
             {
                 text: 'Exibir',
                 align: 'center',
                 sortable: true,
-                value: 'exibir',
+                value: 'showOnRanking',
             },
             {
                 text: 'Ações',
