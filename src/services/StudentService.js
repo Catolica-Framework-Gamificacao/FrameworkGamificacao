@@ -1,5 +1,5 @@
 export default class StudentService {
-    static create(model) {
+    static async create(model) {
         const student = model;
 
         return student;
