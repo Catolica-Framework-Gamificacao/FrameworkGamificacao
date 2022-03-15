@@ -53,6 +53,7 @@
 <script>
 import _ from 'lodash';
 import ClassService from '@/services/ClassService';
+import StudentService from '@/services/StudentService';
 
 export default {
     name: 'StudentRegisterModal',
@@ -75,10 +76,28 @@ export default {
     }),
     methods: {
         finish() {
-            // TODO validar campos
-            this.$emit('student', this.dialog.student);
-            this.dialog.student = {};
-            this.close();
+            let { student } = this.dialog;
+            const formIsValid = this.validateStudentForm();
+
+            if (formIsValid) {
+                StudentService.create(student)
+                    .then((newStudent) => {
+                        student = newStudent;
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        if (error && error.message) {
+                            this.$toastr.e(error.message);
+                        }
+                    })
+                    .finally(() => {
+                        this.$emit('student', student);
+                        this.dialog.student = {};
+                        this.close();
+                    });
+            } else {
+                this.$toastr.e('Preencha os campos necessários no formulário!');
+            }
         },
         close() {
             this.dialog.modal = false;
@@ -87,6 +106,9 @@ export default {
             ClassService.loadData().then((classes) => {
                 this.classes = classes.map((clazz) => clazz.name);
             });
+        },
+        validateStudentForm() {
+            return true;
         },
     },
 };
