@@ -3,9 +3,8 @@
         <v-card>
             <v-card-title class="text-h5"> Cadastrar aluno </v-card-title>
             <v-card-text>
-                <v-form>
+                <v-form ref="form" v-model="formIsValid" lazy-validation>
                     <v-container>
-                        <v-form ref="form" v-model="formIsValid"></v-form>
                         <v-row>
                             <v-col cols="10">
                                 <v-text-field
@@ -123,9 +122,6 @@ export default {
             ClassService.loadData().then((classes) => {
                 this.classes = classes.map((clazz) => clazz.name);
             });
-        },
-        validateStudentForm() {
-            return true;
         },
     },
 };
