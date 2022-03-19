@@ -1,9 +1,20 @@
 <template>
     <v-app>
-        <v-navigation-drawer permanent app v-if="!$route.meta.hideMainNavigation">
+        <v-navigation-drawer
+            permanent
+            app
+            v-if="!$route.meta.hideMainNavigation"
+            :color="$vuetify.theme.themes.dark.main"
+        >
             <Navbar :items="items"></Navbar>
         </v-navigation-drawer>
-        <v-main fluid>
+        <v-app-bar app elevation="0" :color="$vuetify.theme.themes.dark.mainDark">
+            <v-spacer></v-spacer>
+            <v-btn icon>
+                <v-icon>mdi-exit-to-app</v-icon>
+            </v-btn>
+        </v-app-bar>
+        <v-main fluid :color="$vuetify.theme.themes.dark.mainDark">
             <v-container>
                 <router-view></router-view>
             </v-container>
