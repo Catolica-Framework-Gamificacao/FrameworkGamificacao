@@ -8,7 +8,11 @@
         >
             <Navbar :items="items"></Navbar>
         </v-navigation-drawer>
-        <v-app-bar app elevation="0" :color="$vuetify.theme.themes.dark.mainDark">
+        <v-app-bar
+            app elevation="0"
+            :color="$vuetify.theme.themes.dark.mainDark"
+            v-if="!$route.meta.hideMainNavigation"
+        >
             <v-spacer></v-spacer>
             <v-btn icon>
                 <v-icon>mdi-exit-to-app</v-icon>
