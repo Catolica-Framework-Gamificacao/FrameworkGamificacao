@@ -36,7 +36,7 @@ export default {
     components: { Navbar },
     data: () => ({
         items: [
-            { title: 'Home', icon: 'mdi-home-variant-outline', route: '/' },
+            { title: 'Início', icon: 'mdi-home-variant-outline', route: '/' },
             { title: 'Ranking', icon: 'mdi-table-large', route: '/ranking' },
             {
                 title: 'Disciplinas',
