@@ -31,6 +31,7 @@
 <script>
 import StudentList from '@/components/StudentList.vue';
 import StudentRegisterModal from '@/components/modals/StudentRegisterModal.vue';
+import StudentService from '@//services/StudentService';
 
 export default {
     name: 'StudentConfiguration',
@@ -48,6 +49,9 @@ export default {
         students() {
             this.filter();
         },
+    },
+    mounted() {
+        this.loadStudentsList();
     },
     data: () => ({
         filters: {
@@ -73,6 +77,11 @@ export default {
         },
         openAddNewStudentDialog() {
             this.addNewStudentDialog.modal = true;
+        },
+        loadStudentsList() {
+            StudentService.loadData().then((students) => {
+                this.students = students;
+            });
         },
     },
 };
