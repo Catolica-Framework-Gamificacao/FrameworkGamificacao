@@ -2,7 +2,7 @@
     <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
         <v-card>
             <v-toolbar color="#785ef0">
-                <v-toolbar-title>Novo aluno</v-toolbar-title>
+                <v-toolbar-title>Nova disciplina</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                     <v-btn
@@ -22,7 +22,7 @@
                             <v-col cols="12">
                                 <v-text-field
                                     color="#785ef0"
-                                    v-model="dialog.student.name"
+                                    v-model="dialog.discipline.name"
                                     :rules="rules.name"
                                     label="Nome"
                                     hide-details="auto"
@@ -32,33 +32,20 @@
                             </v-col>
 
                             <v-col cols="12">
-                                <v-select
+                                <v-text-field
                                     color="#785ef0"
-                                    v-model="dialog.student.class"
-                                    :rules="rules.class"
-                                    :items="classes"
-                                    label="Disciplina"
+                                    v-model="dialog.discipline.description"
+                                    :rules="rules.description"
+                                    label="Descrição"
                                     hide-details="auto"
-                                    required
-                                ></v-select>
+                                >
+                                </v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="6">
-                                <v-text-field
-                                    color="#785ef0"
-                                    v-model="dialog.student.ra"
-                                    :rules="rules.ra"
-                                    label="RA"
-                                    hide-details="auto"
-                                    required
-                                >
-                                </v-text-field>
-                            </v-col>
-
-                            <v-col cols="6">
                                 <v-switch
-                                    v-model="dialog.student.showOnRanking"
+                                    v-model="dialog.discipline.showOnRanking"
                                     color="#785ef0"
                                     label="Exibir no Ranking"
                                     value="Sim"
@@ -87,12 +74,11 @@
 
 <script>
 import _ from 'lodash';
-import ClassService from '@/services/ClassService';
-import StudentService from '@/services/StudentService';
+import DisciplineService from '@/services/DisciplineService';
 import FormularyUtils from '@/utils/FormularyUtils';
 
 export default {
-    name: 'StudentRegisterModal',
+    name: 'DisciplineRegisterModal',
     props: {
         dialog: {
             type: Object,
@@ -100,20 +86,15 @@ export default {
         },
     },
     data: () => ({
-        classes: [],
+        subjects: [],
         formIsValid: true,
         rules: {
-            name: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome!')],
-            ra: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o RA do aluno!')],
-            class: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Selecione uma disciplina!')],
+            name: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome da disciplina!')],
         },
     }),
-    mounted() {
-        this.loadClasses();
-    },
     computed: {
         hasClassesAvailable() {
-            return !_.isEmpty(this.classes);
+            return !_.isEmpty(this.subjects);
         },
     },
     methods: {
@@ -123,13 +104,13 @@ export default {
         },
 
         finish() {
-            let { student } = this.dialog;
+            let { discipline } = this.dialog;
             const formIsValid = this.$refs.form.validate();
 
             if (formIsValid) {
-                StudentService.create(student)
-                    .then((newStudent) => {
-                        student = newStudent;
+                DisciplineService.create(discipline)
+                    .then((newDiscipline) => {
+                        discipline = newDiscipline;
                     })
                     .catch((error) => {
                         console.error(error);
@@ -138,8 +119,8 @@ export default {
                         }
                     })
                     .finally(() => {
-                        this.$emit('student', student);
-                        this.dialog.student = {};
+                        this.$emit('discipline', discipline);
+                        this.dialog.discipline = {};
                         this.close();
                         this.resetForm();
                     });
@@ -149,12 +130,6 @@ export default {
         close() {
             this.dialog.modal = false;
             this.resetForm();
-        },
-
-        loadClasses() {
-            ClassService.loadData().then((classes) => {
-                this.classes = classes.map((clazz) => clazz.subject);
-            });
         },
     },
 };

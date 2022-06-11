@@ -12,6 +12,9 @@
         item-key="posicao"
         class="elevation-1"
     >
+        <template #[`item.showOnRanking`]="{ item }">
+            {{ item.showOnRanking ? 'Sim' : 'Não' }}
+        </template>
         <template #[`item.actions`]="{ item }">
             <v-btn icon color="blue" @click="edit(item)">
                 <v-icon dark> mdi-pencil </v-icon>
@@ -19,12 +22,13 @@
             <v-btn icon color="red" @click="remove(item.id)">
                 <v-icon dark> mdi-delete </v-icon>
             </v-btn>
-        </template></v-data-table
-    >
+        </template>
+    </v-data-table>
 </template>
 
 <script>
 import _ from 'lodash';
+import DisciplineUtils from '@/utils/DisciplineUtils';
 
 export default {
     name: 'SubjectList',
@@ -35,24 +39,11 @@ export default {
         },
     },
     data: () => ({
-        headers: [
-            {
-                text: 'Nome',
-                align: 'center',
-                sortable: true,
-                value: 'disciplina',
-            },
-            {
-                text: 'Ações',
-                align: 'center',
-                sortable: false,
-                value: 'actions',
-            },
-        ],
+        headers: DisciplineUtils.getDefaultTableHeaders(),
     }),
     computed: {
         tableIsEmpty() {
-            return _.isEmpty(this.items);
+            return _.isEmpty(this.subjects);
         },
     },
 };
