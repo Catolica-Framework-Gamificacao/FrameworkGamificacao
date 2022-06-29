@@ -14,6 +14,11 @@
             v-if="!$route.meta.hideMainNavigation"
         >
             <v-spacer></v-spacer>
+                <!-- <v-btn text outlined @click="" v-if="!$route.meta.title === 'Turmas'"> -->
+                <v-btn text outlined @click="openAddNewClassDialog()">
+                    + Nova turma
+                </v-btn>
+
             <v-btn icon>
                 <v-icon>mdi-exit-to-app</v-icon>
             </v-btn>
@@ -23,17 +28,26 @@
                 <router-view></router-view>
             </v-container>
         </v-main>
+        <ClassRegisterModal
+            :dialog="addNewClassDialog"
+            @classroom="newClassroom = $event"
+        />
     </v-app>
 </template>
 
 <script>
+
 import Navbar from '@/components/Navbar.vue';
+import ClassRegisterModal from '@/components/modals/ClassRegisterModal.vue';
 
 export const APPLICATION_NAME = 'Ludus';
 
 export default {
     name: 'App',
-    components: { Navbar },
+    components: {
+        Navbar,
+        ClassRegisterModal,
+    },
     data: () => ({
         items: [
             { title: 'Início', icon: 'mdi-home-variant-outline', route: '/' },
@@ -54,6 +68,14 @@ export default {
                 route: '/turmas',
             },
         ],
+        addNewClassDialog: {
+            modal: false,
+            classroom: {
+                name: undefined,
+                showOnRanking: true,
+                description: undefined,
+            },
+        },
     }),
     watch: {
         $route: {
@@ -61,6 +83,11 @@ export default {
             handler(to) {
                 document.title = to.meta.title || APPLICATION_NAME;
             },
+        },
+    },
+    methods: {
+        openAddNewClassDialog() {
+            this.addNewClassDialog.modal = true;
         },
     },
 };
