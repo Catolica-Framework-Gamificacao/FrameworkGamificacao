@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '@/views/Home.vue';
 import Login from '@/views/authentication/Login.vue';
+import AuthService from '../services/AuthService';
 
 Vue.use(VueRouter);
 
@@ -66,10 +67,10 @@ const router = new VueRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
-    const publicRoutes = ['/login', '/register', '/home'];
+router.beforeEach((to, _from, next) => {
+    const publicRoutes = ['/login', '/register'];
     const authRequired = !publicRoutes.includes(to.path);
-    const loggedIn = true; // vuex, localStorage.getItem('user'), etc...
+    const loggedIn = AuthService.isLoggedIn();
     if (authRequired && !loggedIn) {
         next('/login');
     } else {
