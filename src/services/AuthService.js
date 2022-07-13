@@ -8,19 +8,6 @@ export default class AuthService {
         if (!credential) {
             throw new Error('Um erro ocorreu ao tentar fazer login. Por favor, tente novamente.');
         }
-        if (
-            // eslint-disable-next-line operator-linebreak
-            credential.login === 'gusthawo.junkes@catolicasc.edu.br' &&
-            credential.password === '123'
-        ) {
-            sessionStorage.setItem('TOKEN', '123');
-            return {
-                username: credential.username,
-                token: '123',
-                name: 'Gusthawo Junkes',
-                email: 'gusthawo.junkes@catolicasc.edu.br',
-            };
-        }
         return axios
             .post(`${PATH}/login`, {
                 login: credential.login,
