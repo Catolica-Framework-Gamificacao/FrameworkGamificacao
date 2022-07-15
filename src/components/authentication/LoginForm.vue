@@ -22,6 +22,7 @@
                             :type="showPassword ? 'text' : 'password'"
                             label="Senha"
                             @click:append="showPassword = !showPassword"
+                            v-on:keyup.enter="login()"
                         ></v-text-field>
                     </v-col>
                 </v-row>
