@@ -6,7 +6,7 @@ const PATH = '/auth';
 export default class AuthService {
     static async login(credential) {
         if (!credential) {
-            throw new Error('Um erro ocorreu ao tentar fazer login. Por favor, tente novamente.');
+            throw new Error('Um erro ocorreu ao tentar fazer login. Entre em contato com o suporte.');
         }
         return axios
             .post(`${PATH}/login`, {
@@ -24,7 +24,7 @@ export default class AuthService {
             })
             .catch((error) => {
                 if (error && error.message && error.message === 'Network Error') {
-                    console.error('Não foi possível estabelecer a conexão com o servidor.');
+                    throw new Error('Não foi possível estabelecer a conexão com o servidor, tente novamente mais tarde.');
                 }
                 throw error;
             });
