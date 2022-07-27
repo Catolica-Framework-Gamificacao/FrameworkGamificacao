@@ -47,7 +47,7 @@
         <v-col cols="12">
             <ClassList :classes="filteredClasses"></ClassList>
         </v-col>
-        <ClassRegisterModal v-model="showCreateDialog"></ClassRegisterModal>
+        <ClassRegisterModal :show="showCreateDialog"></ClassRegisterModal>
     </v-row>
 </template>
 
