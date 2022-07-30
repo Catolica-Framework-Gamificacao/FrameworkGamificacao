@@ -3,30 +3,54 @@
         <v-col cols="12">
             <v-row>
                 <v-col cols="6">
-                    <v-text-field
-                        v-model="filters.className"
-                        label="Turma"
-                        @input="filter()"
-                    ></v-text-field>
+                    <v-row>
+                        <v-col cols="6">
+                            <v-text-field
+                                v-model="filters.className"
+                                label="Turma"
+                                @input="filter()"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-container fluid>
+                                <v-combobox
+                                    v-model="filters.selectedsFromSubjects"
+                                    :items="subjects"
+                                    label="Disciplina"
+                                    multiple
+                                    outlined
+                                    dense
+                                    @change="filter()"
+                                ></v-combobox>
+                            </v-container>
+                        </v-col>
+                    </v-row>
                 </v-col>
                 <v-col cols="6">
-                    <v-container fluid>
-                        <v-combobox
-                            v-model="filters.selectedsFromSubjects"
-                            :items="subjects"
-                            label="Disciplina"
-                            multiple
-                            outlined
-                            dense
-                            @change="filter()"
-                        ></v-combobox>
-                    </v-container>
+                    <v-row>
+                        <v-col cols="2">
+                            <v-btn @click.stop="openFiltersModal()">
+                                Filtrar
+                                <v-icon>mdi-filter</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="2">
+                            <v-btn @click.stop="openCreateDialog()">
+                                Cadastrar
+                                <v-icon>mdi-plus</v-icon>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
         </v-col>
         <v-col cols="12">
             <ClassList :classes="filteredClasses"></ClassList>
         </v-col>
+        <ClassRegisterModal
+            :dialog="createDialog"
+            @on-create="addClass($event)"
+        ></ClassRegisterModal>
     </v-row>
 </template>
 
@@ -34,11 +58,13 @@
 import _ from 'lodash';
 import ClassList from '@/components/ClassList.vue';
 import ClassService from '@/services/ClassService';
+import ClassRegisterModal from '@/components/modals/class/ClassRegisterModal.vue';
 
 export default {
     name: 'ClassConfiguration',
     components: {
         ClassList,
+        ClassRegisterModal,
     },
     data: () => ({
         filters: {
@@ -47,6 +73,11 @@ export default {
         },
         classes: [],
         filteredClasses: [],
+        showFilterDialog: false,
+        createDialog: {
+            modal: false,
+            data: undefined,
+        },
     }),
     mounted() {
         this.loadClasses();
@@ -84,6 +115,25 @@ export default {
                     return subjects.includes(subject);
                 });
             }
+        },
+
+        openFiltersModal() {
+            this.showFilterDialog = true;
+        },
+
+        openCreateDialog() {
+            this.createDialog.modal = true;
+        },
+
+        applyFilters(filters) {
+            console.log(filters);
+        },
+        addClass(data) {
+            if (data && this.classes) {
+                this.classes.push(data);
+                console.log(this.classes);
+            }
+            this.filter();
         },
     },
 };

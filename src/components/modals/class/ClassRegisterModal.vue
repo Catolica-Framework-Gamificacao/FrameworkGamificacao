@@ -2,7 +2,7 @@
     <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
         <v-card>
             <v-toolbar color="#785ef0">
-                <v-toolbar-title>Nova disciplina</v-toolbar-title>
+                <v-toolbar-title>Nova turma</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                     <v-btn icon rounded @click="close()">
@@ -18,9 +18,8 @@
                             <v-col cols="12">
                                 <v-text-field
                                     color="#785ef0"
-                                    v-model="dialog.discipline.name"
-                                    :rules="rules.name"
                                     label="Nome"
+                                    v-model="formData.name"
                                     hide-details="auto"
                                     required
                                 >
@@ -29,33 +28,26 @@
 
                             <v-col cols="12">
                                 <v-text-field
+                                    v-model="formData.subject"
                                     color="#785ef0"
-                                    v-model="dialog.discipline.description"
-                                    :rules="rules.description"
-                                    label="Descrição"
+                                    label="Disciplina"
                                     hide-details="auto"
                                 >
                                 </v-text-field>
                             </v-col>
                         </v-row>
-                        <v-row>
-                            <v-col cols="6">
-                                <v-switch
-                                    v-model="dialog.discipline.showOnRanking"
-                                    color="#785ef0"
-                                    label="Exibir no Ranking"
-                                    value="Sim"
-                                ></v-switch>
-                            </v-col>
-                        </v-row>
+                        <v-row> </v-row>
                     </v-container>
                 </v-form>
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
+                <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="close()">
+                    Cancelar
+                </v-btn>
                 <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="finish()">
-                    Adicionar
+                    Criar
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -63,12 +55,10 @@
 </template>
 
 <script>
-// import _ from 'lodash';
-import DisciplineService from '@/services/DisciplineService';
-import FormularyUtils from '@/utils/FormularyUtils';
+import ClassService from '@/services/ClassService';
 
 export default {
-    name: 'DisciplineRegisterModal',
+    name: 'ClassRegisterModal',
     props: {
         dialog: {
             type: Object,
@@ -76,52 +66,50 @@ export default {
         },
     },
     data: () => ({
-        subjects: [],
-        formIsValid: true,
-        rules: {
-            name: [
-                FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome da disciplina!'),
-            ],
+        formIsValid: false,
+        formData: {
+            name: '',
+            subject: '',
+            studentsAmount: 0,
+            discipline: '',
         },
     }),
-    // computed: {
-    //     hasClassesAvailable() {
-    //         return !_.isEmpty(this.subjects);
-    //     },
-    // },
     methods: {
         resetForm() {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
-        },
-
-        finish() {
-            let { discipline } = this.dialog;
-            const formIsValid = this.$refs.form.validate();
-
-            if (formIsValid) {
-                DisciplineService.create(discipline)
-                    .then((newDiscipline) => {
-                        discipline = newDiscipline;
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        if (error && error.message) {
-                            this.$toastr.e(error.message);
-                        }
-                    })
-                    .finally(() => {
-                        this.$emit('discipline', discipline);
-                        this.dialog.discipline = {};
-                        this.close();
-                        this.resetForm();
-                    });
-            }
+            this.formData = {
+                name: '',
+                subject: '',
+                studentsAmount: 0,
+                discipline: '',
+            };
         },
 
         close() {
             this.dialog.modal = false;
             this.resetForm();
+        },
+
+        finish() {
+            let data = this.formData;
+            const formIsValid = this.$refs.form.validate();
+            if (formIsValid) {
+                ClassService.create(data)
+                    .then((newClass) => {
+                        data = newClass;
+                    })
+                    .catch((error) => {
+                        if (error && error.message) {
+                            this.$toastr.e(error.message);
+                        }
+                    })
+                    .finally(() => {
+                        this.$emit('on-create', data);
+                        this.resetForm();
+                        this.close();
+                    });
+            }
         },
     },
 };
