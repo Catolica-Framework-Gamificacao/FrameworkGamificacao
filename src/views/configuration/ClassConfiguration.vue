@@ -47,7 +47,10 @@
         <v-col cols="12">
             <ClassList :classes="filteredClasses"></ClassList>
         </v-col>
-        <ClassRegisterModal :show="showCreateDialog"></ClassRegisterModal>
+        <ClassRegisterModal
+            :dialog="createDialog"
+            @on-create="addClass($event)"
+        ></ClassRegisterModal>
     </v-row>
 </template>
 
@@ -71,7 +74,10 @@ export default {
         classes: [],
         filteredClasses: [],
         showFilterDialog: false,
-        showCreateDialog: false,
+        createDialog: {
+            modal: false,
+            data: undefined,
+        },
     }),
     mounted() {
         this.loadClasses();
@@ -116,11 +122,18 @@ export default {
         },
 
         openCreateDialog() {
-            this.showCreateDialog = true;
+            this.createDialog.modal = true;
         },
 
         applyFilters(filters) {
             console.log(filters);
+        },
+        addClass(data) {
+            if (data && this.classes) {
+                this.classes.push(data);
+                console.log(this.classes);
+            }
+            this.filter();
         },
     },
 };

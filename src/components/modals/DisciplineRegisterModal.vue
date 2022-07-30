@@ -5,11 +5,7 @@
                 <v-toolbar-title>Nova disciplina</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                    <v-btn
-                        icon
-                        rounded
-                        @click="close()"
-                    >
+                    <v-btn icon rounded @click="close()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar-items>
@@ -58,14 +54,8 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                    rounded
-                    class="mb-3 mr-4"
-                    width="125"
-                    color="#785ef0"
-                    @click="finish()"
-                >
-                   Adicionar
+                <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="finish()">
+                    Adicionar
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -73,7 +63,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+// import _ from 'lodash';
 import DisciplineService from '@/services/DisciplineService';
 import FormularyUtils from '@/utils/FormularyUtils';
 
@@ -89,14 +79,16 @@ export default {
         subjects: [],
         formIsValid: true,
         rules: {
-            name: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome da disciplina!')],
+            name: [
+                FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome da disciplina!'),
+            ],
         },
     }),
-    computed: {
-        hasClassesAvailable() {
-            return !_.isEmpty(this.subjects);
-        },
-    },
+    // computed: {
+    //     hasClassesAvailable() {
+    //         return !_.isEmpty(this.subjects);
+    //     },
+    // },
     methods: {
         resetForm() {
             this.$refs.form.resetValidation();

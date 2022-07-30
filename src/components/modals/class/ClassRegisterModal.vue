@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="show" width="500" @click:outside="resetForm()">
+    <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
         <v-card>
             <v-toolbar color="#785ef0">
                 <v-toolbar-title>Nova turma</v-toolbar-title>
@@ -19,6 +19,7 @@
                                 <v-text-field
                                     color="#785ef0"
                                     label="Nome"
+                                    v-model="formData.name"
                                     hide-details="auto"
                                     required
                                 >
@@ -26,7 +27,12 @@
                             </v-col>
 
                             <v-col cols="12">
-                                <v-text-field color="#785ef0" label="Matéria" hide-details="auto">
+                                <v-text-field
+                                    v-model="formData.subject"
+                                    color="#785ef0"
+                                    label="Disciplina"
+                                    hide-details="auto"
+                                >
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -37,6 +43,9 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
+                <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="close()">
+                    Cancelar
+                </v-btn>
                 <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="finish()">
                     Criar
                 </v-btn>
@@ -46,25 +55,61 @@
 </template>
 
 <script>
+import ClassService from '@/services/ClassService';
+
 export default {
     name: 'ClassRegisterModal',
     props: {
-        show: {
-            type: Boolean,
+        dialog: {
+            type: Object,
             required: true,
         },
     },
     data: () => ({
         formIsValid: false,
+        formData: {
+            name: '',
+            subject: '',
+            studentsAmount: 0,
+            discipline: '',
+        },
     }),
     methods: {
-        close() {
-            this.show = false;
+        resetForm() {
+            this.$refs.form.resetValidation();
+            this.$refs.form.reset();
+            this.formData = {
+                name: '',
+                subject: '',
+                studentsAmount: 0,
+                discipline: '',
+            };
         },
+
+        close() {
+            this.dialog.modal = false;
+            this.resetForm();
+        },
+
         finish() {
-            // validate and create
-            // then
-            this.close();
+            let data = this.formData;
+            const formIsValid = this.$refs.form.validate();
+            if (formIsValid) {
+                ClassService.create(data)
+                    .then((newClass) => {
+                        data = newClass;
+                    })
+                    .catch((error) => {
+                        if (error && error.message) {
+                            this.$toastr.e(error.message);
+                        }
+                    })
+                    .finally(() => {
+                        this.$emit('on-create', data);
+                        this.resetForm();
+                        this.close();
+                    });
+            }
         },
     },
 };
