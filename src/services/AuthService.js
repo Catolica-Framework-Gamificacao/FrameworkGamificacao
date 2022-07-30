@@ -33,7 +33,6 @@ export default class AuthService {
     static logout() {
         sessionStorage.removeItem('user');
         StorageUtils.clearToken();
-        this.$router.push('/login');
     }
 
     static isLoggedIn() {
