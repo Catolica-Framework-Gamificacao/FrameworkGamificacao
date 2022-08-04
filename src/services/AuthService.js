@@ -1,7 +1,7 @@
 import axios from 'axios';
 import StorageUtils from '../utils/StorageUtils';
 
-const PATH = '/auth';
+// const PATH = '/auth';
 
 export default class AuthService {
     static async login(credential) {
@@ -9,7 +9,7 @@ export default class AuthService {
             throw new Error('Um erro ocorreu ao tentar fazer login. Entre em contato com o suporte.');
         }
         return axios
-            .post(`${PATH}/login`, {
+            .post('/Professor/loginProfessor', {
                 login: credential.login,
                 password: credential.password,
             })
