@@ -24,7 +24,7 @@ export default class AuthService {
             })
             .catch((error) => {
                 if (error && error.message && error.message === 'Network Error') {
-                    throw new Error('Não foi possível estabelecer a conexão com o servidor, tente novamente mais tarde.');
+                    throw new Error('Não foi possível estabelecer a conexão com o servidor.');
                 }
                 throw error;
             });
