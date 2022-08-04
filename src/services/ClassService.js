@@ -1,8 +1,11 @@
+import _ from 'lodash';
+import Class from '../models/class.model';
+
 export default class ClassService {
     PATH = '/turmas';
 
     static prepare(clazz) {
-        return clazz;
+        return new Class(clazz);
     }
 
     static async loadData() {
@@ -51,19 +54,49 @@ export default class ClassService {
 
         if (classes) {
             classes.forEach((clazz) => {
-                data.push(clazz);
+                data.push(new Class(clazz));
             });
         }
 
         return data;
     }
 
-    static async create(model) {
+    static getAllFromStorage() {
+        const classes = JSON.parse(localStorage.getItem('classes'));
+        return classes || [];
+    }
+
+    static findByUid(list, uid) {
+        if (!list) return undefined;
+        const index = _.findIndex(list, (row) => row.uid === uid);
+        if (index !== -1) {
+            return { data: list[index], index };
+        }
+        return undefined;
+    }
+
+    static async create(data) {
         const service = this;
-        const clazz = service.prepare(model);
+        const clazz = service.prepare(data);
         let classes = JSON.parse(localStorage.getItem('classes'));
         if (!classes) classes = [];
         classes.push(clazz);
+        localStorage.setItem('classes', JSON.stringify(classes));
+
+        return clazz;
+    }
+
+    static async update(data) {
+        const service = this;
+        const clazz = service.prepare(data);
+        const { uid } = clazz;
+        const classes = this.getAllFromStorage();
+        const existing = this.findByUid(classes, uid);
+
+        if (existing) {
+            classes[existing.index] = existing.data;
+        }
+
         localStorage.setItem('classes', JSON.stringify(classes));
 
         return clazz;

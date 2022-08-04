@@ -13,10 +13,7 @@ module.exports = {
     parser: 'vue-eslint-parser',
     plugins: [],
     rules: {
-        'linebreak-style': [
-            'error',
-            process.platform === 'win32' ? 'windows' : 'unix',
-        ],
+        'linebreak-style': ['error', process.platform === 'win32' ? 'windows' : 'unix'],
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
         semi: ['error', 'always'],
@@ -31,5 +28,6 @@ module.exports = {
                 peerDependencies: false,
             },
         ],
+        'max-len': ['error', { code: 140 }],
     },
 };

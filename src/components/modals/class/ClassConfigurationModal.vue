@@ -1,8 +1,9 @@
+<!-- eslint-disable max-len -->
 <template>
     <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
         <v-card>
             <v-toolbar color="#785ef0">
-                <v-toolbar-title>Nova turma</v-toolbar-title>
+                <v-toolbar-title>#NOMEDATURMA</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                     <v-btn icon rounded @click="close()">
@@ -16,23 +17,14 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field
-                                    color="#785ef0"
-                                    label="Nome"
-                                    v-model="formData.name"
-                                    hide-details="auto"
-                                    required
-                                >
+                                <v-text-field color="#785ef0" label="Nome" v-model="formData.name" hide-details="auto"
+                                    required>
                                 </v-text-field>
                             </v-col>
 
                             <v-col cols="12">
-                                <v-text-field
-                                    v-model="formData.subject"
-                                    color="#785ef0"
-                                    label="Disciplina"
-                                    hide-details="auto"
-                                >
+                                <v-text-field v-model="formData.subject" color="#785ef0" label="Disciplina"
+                                    hide-details="auto">
                                 </v-text-field>
                             </v-col>
                         </v-row>
@@ -58,7 +50,7 @@
 import ClassService from '@/services/ClassService';
 
 export default {
-    name: 'ClassRegisterModal',
+    name: 'ClassConfigurationModal',
     props: {
         dialog: {
             type: Object,
@@ -70,20 +62,12 @@ export default {
         formData: {
             name: '',
             subject: '',
-            studentsAmount: 0,
-            discipline: '',
         },
     }),
     methods: {
         resetForm() {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
-            this.formData = {
-                name: '',
-                subject: '',
-                studentsAmount: 0,
-                discipline: '',
-            };
         },
 
         close() {
@@ -92,12 +76,11 @@ export default {
         },
 
         async finish() {
-            const data = this.formData;
             const formIsValid = this.$refs.form.validate();
             if (formIsValid) {
                 try {
-                    const newClass = await ClassService.create(data);
-                    this.$emit('on-create', newClass);
+                    const updated = await ClassService.update(this.dialog.data);
+                    console.log(updated);
                 } catch (error) {
                     console.log(error);
                     if (error && error.message) {
