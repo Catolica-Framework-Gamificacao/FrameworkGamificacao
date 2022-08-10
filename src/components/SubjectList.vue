@@ -1,8 +1,33 @@
 <template>
     <div v-if="tableIsEmpty">
-        <v-row>
-            <v-col cols="12"> Não existem dados para serem mostrados. </v-col>
-        </v-row>
+    <v-container>
+    <v-item-group>
+    <v-container>
+      <v-row>
+        <v-col
+        color=primary
+          v-for="n in 6"
+          :key="n"
+          cols="12"
+          md="4"
+        >
+          <v-item>
+            <v-card
+            :style="{backgroundColor: randomColor()}"
+            class="d-flex text-start overflow-auto"
+              height="100"
+            >
+            <v-card-text>
+                <h2>Titulo da</h2>
+                <p>Texto da disciplina</p>
+                </v-card-text>
+            </v-card>
+          </v-item>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-item-group>
+    </v-container>
     </div>
     <v-data-table
         v-else
@@ -44,6 +69,13 @@ export default {
     computed: {
         tableIsEmpty() {
             return _.isEmpty(this.subjects);
+        },
+    },
+    methods: {
+        randomColor() {
+            const r = () => Math.floor(256 * Math.random());
+            const total = `rgb(${r()}, ${r()}, ${(100)})`;
+            return total;
         },
     },
 };
