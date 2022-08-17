@@ -1,12 +1,17 @@
 <template>
     <div v-if="tableIsEmpty">
+    <v-row>
+            <v-col cols="12"> Não existem dados para serem mostrados. </v-col>
+        </v-row>
+    </div>
+    <div v-else>
     <v-container>
     <v-item-group>
     <v-container>
       <v-row>
         <v-col
         color=primary
-          v-for="n in 6"
+          v-for="n in subjects"
           :key="n"
           cols="12"
           md="4"
