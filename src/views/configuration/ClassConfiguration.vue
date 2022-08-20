@@ -47,10 +47,15 @@
         <v-col cols="12">
             <ClassList :classes="filteredClasses"></ClassList>
         </v-col>
+<<<<<<< Updated upstream
         <ClassRegisterModal
             :dialog="createDialog"
             @on-create="addClass($event)"
         ></ClassRegisterModal>
+=======
+        <ClassRegisterModal :dialog="createDialog" @on-create="addClass($event)"></ClassRegisterModal>
+        <ClassFiltersModal :dialog="showFilterDialog" @on-create="applyFilters($event)"></ClassFiltersModal>
+>>>>>>> Stashed changes
     </v-row>
 </template>
 
@@ -59,12 +64,14 @@ import _ from 'lodash';
 import ClassList from '@/components/ClassList.vue';
 import ClassService from '@/services/ClassService';
 import ClassRegisterModal from '@/components/modals/class/ClassRegisterModal.vue';
+import ClassFiltersModal from '@/components/modals/class/ClassFiltersModal.vue';
 
 export default {
     name: 'ClassConfiguration',
     components: {
         ClassList,
         ClassRegisterModal,
+        ClassFiltersModal,
     },
     data: () => ({
         filters: {
