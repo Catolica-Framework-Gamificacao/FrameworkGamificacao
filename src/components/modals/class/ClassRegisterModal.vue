@@ -36,11 +36,15 @@
                                 </v-text-field>
                             </v-col>
                         </v-row>
-                        <v-row> </v-row>
                     </v-container>
                 </v-form>
+                <v-card-actions>
+                    <v-btn rounded class="mb-3 mr-4" width="80" color="#785ef0"
+                    @click="openModal()">
+                        Alunos
+                    </v-btn>
+                </v-card-actions>
             </v-card-text>
-
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="close()">
@@ -75,6 +79,9 @@ export default {
         },
     }),
     methods: {
+        openModal() {
+
+        },
         resetForm() {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
