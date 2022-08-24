@@ -54,6 +54,9 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
+                <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="close()">
+                   <strong class="red--text text--darken-1">Cancelar</strong>
+                </v-btn>
                 <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="finish()">
                     Adicionar
                 </v-btn>
