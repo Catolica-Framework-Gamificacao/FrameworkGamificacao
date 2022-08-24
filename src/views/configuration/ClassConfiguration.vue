@@ -47,15 +47,14 @@
         <v-col cols="12">
             <ClassList :classes="filteredClasses"></ClassList>
         </v-col>
-<<<<<<< Updated upstream
         <ClassRegisterModal
             :dialog="createDialog"
             @on-create="addClass($event)"
         ></ClassRegisterModal>
-=======
-        <ClassRegisterModal :dialog="createDialog" @on-create="addClass($event)"></ClassRegisterModal>
-        <ClassFiltersModal :dialog="showFilterDialog" @on-create="applyFilters($event)"></ClassFiltersModal>
->>>>>>> Stashed changes
+        <ClassFiltersModal
+            :dialog="showFilterDialog"
+            @on-create="applyFilters($event)"
+        ></ClassFiltersModal>
     </v-row>
 </template>
 
@@ -80,7 +79,10 @@ export default {
         },
         classes: [],
         filteredClasses: [],
-        showFilterDialog: false,
+        showFilterDialog: {
+            modal: false,
+            data: undefined,
+        },
         createDialog: {
             modal: false,
             data: undefined,
@@ -125,7 +127,7 @@ export default {
         },
 
         openFiltersModal() {
-            this.showFilterDialog = true;
+            this.showFilterDialog.modal = true;
         },
 
         openCreateDialog() {
