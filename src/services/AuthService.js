@@ -1,10 +1,9 @@
 import axios from 'axios';
 import StorageUtils from '../utils/StorageUtils';
 
-// const PATH = '/auth';
-
 export default class AuthService {
     static async login(credential) {
+        const development = !!process.env.VUE_APP_DEVELOPMENT_MODE;
         if (!credential) {
             throw new Error('Um erro ocorreu ao tentar fazer login. Entre em contato com o suporte.');
         }
@@ -15,7 +14,7 @@ export default class AuthService {
             })
             .then((response) => {
                 const { data } = response;
-                if (!data.token) {
+                if (!data.token || development) {
                     throw new Error('Um erro ocorreu ao tentar fazer login.');
                 }
                 sessionStorage.setItem('user', JSON.stringify(data));
