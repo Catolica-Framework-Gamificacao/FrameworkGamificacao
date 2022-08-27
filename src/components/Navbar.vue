@@ -60,7 +60,6 @@ export default {
             if (user.profilePictureSrc) {
                 this.profilePictureSrc = user.profilePictureSrc;
             }
-            console.log(user);
         }
     },
 };
