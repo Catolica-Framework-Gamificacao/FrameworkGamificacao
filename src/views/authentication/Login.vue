@@ -1,11 +1,9 @@
 <template>
     <v-app>
         <v-main>
-            <v-container class="fill-height" fluid>
-                <v-row align="center" justify="center" dense>
-                    <v-col cols="10" sm="8" md="6" lg="3">
-                        <LoginForm @login="login($event)"></LoginForm>
-                    </v-col>
+            <v-container class="h-100">
+                <v-row class="h-100" align="center" justify="center" dense>
+                    <LoginForm @login="login($event)"></LoginForm>
                 </v-row>
             </v-container>
         </v-main>
@@ -41,3 +39,9 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.h-100 {
+    height: 100%;
+}
+</style>
