@@ -9,12 +9,13 @@
             <Navbar :items="items"></Navbar>
         </v-navigation-drawer>
         <v-app-bar
-            app elevation="0"
+            app
+            elevation="0"
             :color="$vuetify.theme.themes.dark.mainDark"
             v-if="!$route.meta.hideMainNavigation"
         >
             <v-spacer></v-spacer>
-            <v-btn icon>
+            <v-btn icon @click="logout()">
                 <v-icon>mdi-exit-to-app</v-icon>
             </v-btn>
         </v-app-bar>
@@ -28,6 +29,7 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue';
+import AuthService from '@/services/AuthService';
 
 export const APPLICATION_NAME = 'Ludus';
 
@@ -61,6 +63,12 @@ export default {
             handler(to) {
                 document.title = to.meta.title || APPLICATION_NAME;
             },
+        },
+    },
+    methods: {
+        async logout() {
+            await AuthService.logout();
+            this.$router.push('/login');
         },
     },
 };

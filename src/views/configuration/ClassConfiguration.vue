@@ -9,8 +9,15 @@
                         </v-col>
                         <v-col cols="6">
                             <v-container fluid>
-                                <v-combobox v-model="filters.selectedsFromSubjects" :items="subjects" label="Disciplina"
-                                    multiple outlined dense @change="filter()"></v-combobox>
+                                <v-combobox
+                                    v-model="filters.selectedsFromSubjects"
+                                    :items="subjects"
+                                    label="Disciplina"
+                                    multiple
+                                    outlined
+                                    dense
+                                    @change="filter()"
+                                ></v-combobox>
                             </v-container>
                         </v-col>
                     </v-row>

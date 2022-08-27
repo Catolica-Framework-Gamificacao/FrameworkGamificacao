@@ -6,7 +6,8 @@ import axios from 'axios';
 import router from '@/router';
 import App from './App.vue';
 
-axios.defaults.baseURL = 'localhost:5555/api';
+axios.defaults.baseURL = process.env.VUE_APP_API_PATH;
+
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 Vue.use(VueToastr, toastrConfiguration);
