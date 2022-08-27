@@ -28,7 +28,7 @@ export default class AuthService {
                     throw new Error('Não foi possível estabelecer a conexão com o servidor.');
                 }
                 console.error(error);
-                throw new Error('Não foi realizar o login, entre em contato com o suporte!');
+                throw new Error('Não foi possível realizar o login, entre em contato com o suporte!');
             });
     }
 
