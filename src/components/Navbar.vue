@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import StorageUtils from '@/utils/StorageUtils';
+
 export default {
     name: 'Navbar',
     props: {
@@ -50,6 +52,10 @@ export default {
         // https://cdn.vuetifyjs.com/images/john.png
         profilePictureSrc: 'https://cdn.vuetifyjs.com/images/john.png',
     }),
+    created() {
+        const user = StorageUtils.getCurrentUser();
+        console.log(user);
+    },
 };
 </script>
 

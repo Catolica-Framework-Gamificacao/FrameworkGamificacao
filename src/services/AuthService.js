@@ -14,7 +14,7 @@ export default class AuthService {
             })
             .then((response) => {
                 const { data } = response;
-                if (!data.token || development) {
+                if (!data.token && !development) {
                     throw new Error('Um erro ocorreu ao tentar fazer login.');
                 }
                 sessionStorage.setItem('user', JSON.stringify(data));
