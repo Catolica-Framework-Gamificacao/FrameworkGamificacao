@@ -15,8 +15,7 @@
                 <v-card-text class="text-left"> Alunos: {{ clazz.studentsAmount }} </v-card-text>
             </v-card>
         </v-col>
-        <ClassConfigurationModal :dialog="editDialog">
-        </ClassConfigurationModal>
+        <ClassConfigurationModal :dialog="editDialog"> </ClassConfigurationModal>
     </v-row>
 </template>
 

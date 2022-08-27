@@ -6,7 +6,7 @@
             </v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="text-h6">
-                    <span>User</span>
+                    <span>{{ userDisplayName }}</span>
                 </v-list-item-title>
                 <v-list-item-subtitle> Ludus &copy;</v-list-item-subtitle>
             </v-list-item-content>
@@ -51,10 +51,17 @@ export default {
     data: () => ({
         // https://cdn.vuetifyjs.com/images/john.png
         profilePictureSrc: 'https://cdn.vuetifyjs.com/images/john.png',
+        userDisplayName: 'Usuário do sistema',
     }),
     created() {
         const user = StorageUtils.getCurrentUser();
-        console.log(user);
+        if (user) {
+            this.userDisplayName = user.name;
+            if (user.profilePictureSrc) {
+                this.profilePictureSrc = user.profilePictureSrc;
+            }
+            console.log(user);
+        }
     },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
         <v-card>
-            <v-toolbar color="#785ef0">
+            <v-toolbar :color="$vuetify.theme.themes.dark.main">
                 <v-toolbar-title>Nova turma</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
@@ -17,7 +17,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-text-field
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     label="Nome"
                                     v-model="formData.name"
                                     hide-details="auto"
@@ -29,7 +29,7 @@
                             <v-col cols="12">
                                 <v-text-field
                                     v-model="formData.subject"
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     label="Disciplina"
                                     hide-details="auto"
                                 >
@@ -39,18 +39,23 @@
                     </v-container>
                 </v-form>
                 <v-card-actions>
-                    <v-btn rounded class="mb-3 mr-4" width="80" color="#785ef0"
-                    @click="openModal()">
+                    <v-btn
+                        rounded
+                        class="mb-3 mr-4"
+                        width="80"
+                        :color="$vuetify.theme.themes.dark.main"
+                        @click="openModal()"
+                    >
                         Alunos
                     </v-btn>
                 </v-card-actions>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="close()">
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="close()">
                     Cancelar
                 </v-btn>
-                <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="finish()">
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="finish()">
                     Criar
                 </v-btn>
             </v-card-actions>
@@ -79,9 +84,7 @@ export default {
         },
     }),
     methods: {
-        openModal() {
-
-        },
+        openModal() {},
         resetForm() {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
