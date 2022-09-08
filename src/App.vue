@@ -50,11 +50,11 @@ export default {
                 icon: 'mdi-account-multiple',
                 route: '/alunos',
             },
-            {
-                title: 'Turmas',
-                icon: 'mdi-human-male-board',
-                route: '/turmas',
-            },
+            // {
+            //     title: 'Turmas',
+            //     icon: 'mdi-human-male-board',
+            //     route: '/turmas',
+            // },
         ],
     }),
     watch: {
