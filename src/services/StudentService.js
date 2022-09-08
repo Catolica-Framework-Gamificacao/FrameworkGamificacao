@@ -35,7 +35,7 @@ export default class StudentService {
     }
 
     static async create(model) {
-        let student = model;
+        let student;
         const service = this;
 
         student = await axios
@@ -55,7 +55,7 @@ export default class StudentService {
                 return undefined;
             });
 
-        return model;
+        return student;
     }
 
     static async remove(studentId) {
