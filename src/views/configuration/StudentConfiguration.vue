@@ -15,7 +15,8 @@
         <v-col cols="12">
             <StudentList :students="filteredStudents"></StudentList>
         </v-col>
-        <StudentRegisterModal :dialog="addNewStudentDialog" @student="newStudent = $event"></StudentRegisterModal>
+
+        <StudentRegisterModal ref="modalStudent" :dialog="addNewStudentDialog" @student="newStudent = $event"/>
     </v-row>
 </template>
 
@@ -52,7 +53,6 @@ export default {
         filteredStudents: [],
         newStudent: {},
         addNewStudentDialog: {
-            modal: false,
             student: {
                 ra: undefined,
                 name: undefined,
@@ -67,7 +67,7 @@ export default {
             this.filteredStudents = this.students;
         },
         openAddNewStudentDialog() {
-            this.addNewStudentDialog.modal = true;
+            this.$refs.modalStudent.open();
         },
         loadStudentsList() {
             StudentService.loadData().then((students) => {

@@ -1,18 +1,33 @@
 <template>
-    <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
+    <v-dialog
+        v-model="showModal"
+        width="500"
+        eager
+        @click:outside="resetForm()"
+    >
         <v-card>
-            <v-toolbar :color="$vuetify.theme.themes.dark.main">
+            <v-toolbar
+                :color="$vuetify.theme.themes.dark.main"
+            >
                 <v-toolbar-title>Novo aluno</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                    <v-btn icon rounded @click="close()">
+                    <v-btn
+                        icon
+                        rounded
+                        @click="close()"
+                    >
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar-items>
             </v-toolbar>
 
             <v-card-text>
-                <v-form ref="form" v-model="formIsValid" lazy-validation>
+                <v-form
+                    ref="form"
+                    v-model="formIsValid"
+                    lazy-validation
+                >
                     <v-container>
                         <v-row>
                             <v-col cols="12">
@@ -23,22 +38,40 @@
                                     label="Nome"
                                     hide-details="auto"
                                     required
-                                >
-                                </v-text-field>
+                                />
                             </v-col>
 
                             <v-col cols="12">
                                 <v-select
+                                    @click="resetIndexColor"
                                     :color="$vuetify.theme.themes.dark.main"
                                     v-model="dialog.student.class"
                                     :rules="rules.class"
                                     :items="classes"
                                     label="Disciplina"
                                     hide-details="auto"
+                                    item-color="white"
+                                    no-data-text="Nenhuma disciplina encontrada."
                                     required
-                                ></v-select>
+                                >
+                                    <template v-slot:item="{ active, item, attrs, on }">
+                                        <v-list-item
+                                            :style="'border-radius: 30px; margin-bottom: 5px; background-color:'+ getRandomColor()"
+                                            v-on="on"
+                                            v-bind="attrs"
+                                            class="font-weight-bold text-start"
+                                        >
+                                            <v-list-item-content>
+                                                <v-list-item-title>
+                                                    <span>{{ item.text }}</span>
+                                                </v-list-item-title>
+                                            </v-list-item-content>
+                                        </v-list-item>
+                                    </template>
+                                </v-select>
                             </v-col>
                         </v-row>
+
                         <v-row>
                             <v-col cols="6">
                                 <v-text-field
@@ -48,8 +81,7 @@
                                     label="RA"
                                     hide-details="auto"
                                     required
-                                >
-                                </v-text-field>
+                                />
                             </v-col>
 
                             <v-col cols="6">
@@ -58,7 +90,7 @@
                                     :color="$vuetify.theme.themes.dark.main"
                                     label="Exibir no Ranking"
                                     value="Sim"
-                                ></v-switch>
+                                />
                             </v-col>
                         </v-row>
                     </v-container>
@@ -67,10 +99,23 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="close()">
+                <v-btn
+                    rounded
+                    class="mb-3 mr-4"
+                    width="125"
+                    :color="$vuetify.theme.themes.dark.main"
+                    @click="close()"
+                >
                     <strong class="red--text text--darken-1">Cancelar</strong>
                 </v-btn>
-                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="finish()">
+
+                <v-btn
+                    rounded
+                    class="mb-3 mr-4"
+                    width="125"
+                    :color="$vuetify.theme.themes.dark.main"
+                    @click="finish()"
+                >
                     Adicionar
                 </v-btn>
             </v-card-actions>
@@ -84,6 +129,8 @@ import ClassService from '@/services/ClassService';
 import StudentService from '@/services/StudentService';
 import FormularyUtils from '@/utils/FormularyUtils';
 
+let indexColor = 0;
+
 export default {
     name: 'StudentRegisterModal',
     props: {
@@ -93,6 +140,7 @@ export default {
         },
     },
     data: () => ({
+        showModal: false,
         classes: [],
         formIsValid: true,
         rules: {
@@ -140,14 +188,41 @@ export default {
         },
 
         close() {
-            this.dialog.modal = false;
+            this.showModal = false;
             this.resetForm();
+        },
+
+        open() {
+            this.showModal = true;
         },
 
         loadClasses() {
             ClassService.loadData().then((classes) => {
                 this.classes = classes.map((clazz) => clazz.subject);
             });
+        },
+
+        getRandomColor() {
+            const listColor = [
+                '#dc2681',
+                '#fd6300',
+                '#feb100',
+                '#628fff',
+            ];
+
+            const color = listColor[indexColor];
+
+            if (indexColor === 3) {
+                indexColor = 0;
+            } else {
+                indexColor += 1;
+            }
+
+            return color;
+        },
+
+        resetIndexColor() {
+            indexColor = 0;
         },
     },
 };
