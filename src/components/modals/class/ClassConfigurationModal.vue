@@ -1,8 +1,9 @@
+<!-- eslint-disable max-len -->
 <template>
     <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
         <v-card>
             <v-toolbar :color="$vuetify.theme.themes.dark.main">
-                <v-toolbar-title>Nova turma</v-toolbar-title>
+                <v-toolbar-title>#NOMEDATURMA</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                     <v-btn icon rounded @click="close()">
@@ -36,20 +37,11 @@
                                 </v-text-field>
                             </v-col>
                         </v-row>
+                        <v-row> </v-row>
                     </v-container>
                 </v-form>
-                <v-card-actions>
-                    <v-btn
-                        rounded
-                        class="mb-3 mr-4"
-                        width="80"
-                        :color="$vuetify.theme.themes.dark.main"
-                        @click="openModal()"
-                    >
-                        Alunos
-                    </v-btn>
-                </v-card-actions>
             </v-card-text>
+
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="close()">
@@ -67,7 +59,7 @@
 import ClassService from '@/services/ClassService';
 
 export default {
-    name: 'ClassRegisterModal',
+    name: 'ClassConfigurationModal',
     props: {
         dialog: {
             type: Object,
@@ -79,21 +71,12 @@ export default {
         formData: {
             name: '',
             subject: '',
-            studentsAmount: 0,
-            discipline: '',
         },
     }),
     methods: {
-        openModal() {},
         resetForm() {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
-            this.formData = {
-                name: '',
-                subject: '',
-                studentsAmount: 0,
-                discipline: '',
-            };
         },
 
         close() {
@@ -102,12 +85,11 @@ export default {
         },
 
         async finish() {
-            const data = this.formData;
             const formIsValid = this.$refs.form.validate();
             if (formIsValid) {
                 try {
-                    const newClass = await ClassService.create(data);
-                    this.$emit('on-create', newClass);
+                    const updated = await ClassService.update(this.dialog.data);
+                    console.log(updated);
                 } catch (error) {
                     console.log(error);
                     if (error && error.message) {

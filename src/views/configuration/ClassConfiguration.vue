@@ -5,11 +5,7 @@
                 <v-col cols="6">
                     <v-row>
                         <v-col cols="6">
-                            <v-text-field
-                                v-model="filters.className"
-                                label="Turma"
-                                @input="filter()"
-                            ></v-text-field>
+                            <v-text-field v-model="filters.className" label="Turma" @input="filter()"></v-text-field>
                         </v-col>
                         <v-col cols="6">
                             <v-container fluid>
@@ -28,13 +24,13 @@
                 </v-col>
                 <v-col cols="6">
                     <v-row>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <v-btn @click.stop="openFiltersModal()">
                                 Filtrar
                                 <v-icon>mdi-filter</v-icon>
                             </v-btn>
                         </v-col>
-                        <v-col cols="2">
+                        <v-col cols="3">
                             <v-btn @click.stop="openCreateDialog()">
                                 Cadastrar
                                 <v-icon>mdi-plus</v-icon>
@@ -45,7 +41,10 @@
             </v-row>
         </v-col>
         <v-col cols="12">
-            <ClassList :classes="filteredClasses"></ClassList>
+            <div v-if="filteredClasses.length === 0">
+                <span>Não existem turmas cadastradas.</span>
+            </div>
+            <ClassList v-else :classes="filteredClasses"></ClassList>
         </v-col>
         <ClassRegisterModal
             :dialog="createDialog"
@@ -140,7 +139,6 @@ export default {
         addClass(data) {
             if (data && this.classes) {
                 this.classes.push(data);
-                console.log(this.classes);
             }
             this.filter();
         },

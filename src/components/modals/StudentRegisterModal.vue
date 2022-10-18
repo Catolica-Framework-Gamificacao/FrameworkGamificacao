@@ -1,15 +1,11 @@
 <template>
     <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
         <v-card>
-            <v-toolbar color="#785ef0">
+            <v-toolbar :color="$vuetify.theme.themes.dark.main">
                 <v-toolbar-title>Novo aluno</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                    <v-btn
-                        icon
-                        rounded
-                        @click="close()"
-                    >
+                    <v-btn icon rounded @click="close()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar-items>
@@ -21,7 +17,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-text-field
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     v-model="dialog.student.name"
                                     :rules="rules.name"
                                     label="Nome"
@@ -33,7 +29,7 @@
 
                             <v-col cols="12">
                                 <v-select
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     v-model="dialog.student.class"
                                     :rules="rules.class"
                                     :items="classes"
@@ -46,7 +42,7 @@
                         <v-row>
                             <v-col cols="6">
                                 <v-text-field
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     v-model="dialog.student.ra"
                                     :rules="rules.ra"
                                     label="RA"
@@ -59,7 +55,7 @@
                             <v-col cols="6">
                                 <v-switch
                                     v-model="dialog.student.showOnRanking"
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     label="Exibir no Ranking"
                                     value="Sim"
                                 ></v-switch>
@@ -71,14 +67,11 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                    rounded
-                    class="mb-3 mr-4"
-                    width="125"
-                    color="#785ef0"
-                    @click="finish()"
-                >
-                   Adicionar
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="close()">
+                    <strong class="red--text text--darken-1">Cancelar</strong>
+                </v-btn>
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="finish()">
+                    Adicionar
                 </v-btn>
             </v-card-actions>
         </v-card>

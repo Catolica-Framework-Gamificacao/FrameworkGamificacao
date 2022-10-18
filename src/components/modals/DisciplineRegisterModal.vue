@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog.modal" width="500" @click:outside="resetForm()">
         <v-card>
-            <v-toolbar color="#785ef0">
+            <v-toolbar :color="$vuetify.theme.themes.dark.main">
                 <v-toolbar-title>Nova disciplina</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
@@ -17,7 +17,7 @@
                         <v-row>
                             <v-col cols="12">
                                 <v-text-field
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     v-model="dialog.discipline.name"
                                     :rules="rules.name"
                                     label="Nome"
@@ -29,7 +29,7 @@
 
                             <v-col cols="12">
                                 <v-text-field
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     v-model="dialog.discipline.description"
                                     :rules="rules.description"
                                     label="Descrição"
@@ -42,10 +42,13 @@
                             <v-col cols="6">
                                 <v-switch
                                     v-model="dialog.discipline.showOnRanking"
-                                    color="#785ef0"
+                                    :color="$vuetify.theme.themes.dark.main"
                                     label="Exibir no Ranking"
                                     value="Sim"
                                 ></v-switch>
+                            </v-col>
+                            <v-col cols="6">
+                                <v-btn :color="$vuetify.theme.themes.dark.main" @click="linkStudents()">Alunos</v-btn>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -54,7 +57,10 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn rounded class="mb-3 mr-4" width="125" color="#785ef0" @click="finish()">
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="close()">
+                    <strong class="red--text text--darken-1">Cancelar</strong>
+                </v-btn>
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="finish()">
                     Adicionar
                 </v-btn>
             </v-card-actions>
@@ -63,7 +69,6 @@
 </template>
 
 <script>
-// import _ from 'lodash';
 import DisciplineService from '@/services/DisciplineService';
 import FormularyUtils from '@/utils/FormularyUtils';
 
@@ -79,17 +84,13 @@ export default {
         subjects: [],
         formIsValid: true,
         rules: {
-            name: [
-                FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome da disciplina!'),
-            ],
+            name: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome da disciplina!')],
         },
     }),
-    // computed: {
-    //     hasClassesAvailable() {
-    //         return !_.isEmpty(this.subjects);
-    //     },
-    // },
     methods: {
+        linkStudents() {
+            console.log('link');
+        },
         resetForm() {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
@@ -109,9 +110,12 @@ export default {
                         if (error && error.message) {
                             this.$toastr.e(error.message);
                         }
+                        discipline = undefined;
                     })
                     .finally(() => {
-                        this.$emit('discipline', discipline);
+                        if (discipline) {
+                            this.$emit('discipline', discipline);
+                        }
                         this.dialog.discipline = {};
                         this.close();
                         this.resetForm();

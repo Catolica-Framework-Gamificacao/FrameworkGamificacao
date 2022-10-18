@@ -4,14 +4,7 @@
             <v-col cols="12"> Não existem dados para serem mostrados. </v-col>
         </v-row>
     </div>
-    <v-data-table
-        v-else
-        dense
-        :headers="headers"
-        :items="students"
-        item-key="posicao"
-        class="elevation-1"
-    >
+    <v-data-table v-else dense :headers="headers" :items="students" item-key="posicao" class="elevation-1">
         <template #[`item.showOnRanking`]="{ item }">
             {{ item.showOnRanking ? 'Sim' : 'Não' }}
         </template>
