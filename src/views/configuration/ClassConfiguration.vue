@@ -46,7 +46,14 @@
             </div>
             <ClassList v-else :classes="filteredClasses"></ClassList>
         </v-col>
-        <ClassRegisterModal :dialog="createDialog" @on-create="addClass($event)"></ClassRegisterModal>
+        <ClassRegisterModal
+            :dialog="createDialog"
+            @on-create="addClass($event)"
+        ></ClassRegisterModal>
+        <ClassFiltersModal
+            :dialog="showFilterDialog"
+            @on-create="applyFilters($event)"
+        ></ClassFiltersModal>
     </v-row>
 </template>
 
@@ -55,12 +62,14 @@ import _ from 'lodash';
 import ClassList from '@/components/ClassList.vue';
 import ClassService from '@/services/ClassService';
 import ClassRegisterModal from '@/components/modals/class/ClassRegisterModal.vue';
+import ClassFiltersModal from '@/components/modals/class/ClassFiltersModal.vue';
 
 export default {
     name: 'ClassConfiguration',
     components: {
         ClassList,
         ClassRegisterModal,
+        ClassFiltersModal,
     },
     data: () => ({
         filters: {
@@ -69,7 +78,10 @@ export default {
         },
         classes: [],
         filteredClasses: [],
-        showFilterDialog: false,
+        showFilterDialog: {
+            modal: false,
+            data: undefined,
+        },
         createDialog: {
             modal: false,
             data: undefined,
@@ -114,7 +126,7 @@ export default {
         },
 
         openFiltersModal() {
-            this.showFilterDialog = true;
+            this.showFilterDialog.modal = true;
         },
 
         openCreateDialog() {
