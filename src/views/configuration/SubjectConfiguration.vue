@@ -34,7 +34,7 @@ export default {
     },
     watch: {
         newDiscipline(newDiscipline, oldDiscipline) {
-            if (newDiscipline !== oldDiscipline) {
+            if (newDiscipline && newDiscipline !== oldDiscipline) {
                 return this.subjects.push(newDiscipline);
             }
             return newDiscipline;

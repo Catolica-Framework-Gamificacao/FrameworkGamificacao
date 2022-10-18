@@ -32,7 +32,7 @@ export default {
     },
     watch: {
         newStudent(newStudent, oldStudent) {
-            if (newStudent !== oldStudent) {
+            if (newStudent && newStudent !== oldStudent) {
                 return this.students.push(newStudent);
             }
             return newStudent;

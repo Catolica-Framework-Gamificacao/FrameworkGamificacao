@@ -1,61 +1,48 @@
 import axios from 'axios';
 import _ from 'lodash';
 
+const CONTROLLER_PATH = '/Disciplina';
 export default class DiciplineService {
-    CONTROLLER_PATH = '/Disciplina';
-
     static prepare(dicipline) {
         return dicipline;
     }
 
     static async loadData() {
-        let diciplines = [];
+        let disciplines = [];
         const service = this;
 
-        diciplines = await axios
-            .get('/Disciplina/getDisciplinas')
-            .then((response) => {
-                diciplines = response.data;
-                if (diciplines.length === 0 || !_.isArray(diciplines)) {
-                    return [];
-                }
-
-                diciplines.forEach((dicipline) => service.prepare(dicipline));
-
-                return diciplines;
-            })
-            .catch((error) => {
-                if (error && error.message) {
-                    console.error(error.message);
-                }
+        try {
+            const response = await axios.get(`/${CONTROLLER_PATH}/getDisciplinas`);
+            disciplines = response.data;
+            if (!disciplines || disciplines.length === 0 || !_.isArray(disciplines)) {
                 return [];
-            });
+            }
 
-        return diciplines;
+            disciplines.forEach((dicipline) => service.prepare(dicipline));
+        } catch (error) {
+            console.error(error);
+            throw new Error('Não foi possível buscar a listagem de disciplinas, entre em contato com o suporte');
+        }
+
+        return disciplines;
     }
 
     static async create(model) {
-        let dicipline;
+        let discipline;
         const service = this;
 
-        dicipline = await axios
-            .post('/Disciplina/saveDisciplina', model)
-            .then((response) => {
-                dicipline = response.data;
-                if (dicipline.length === 0 || !_.isArray(dicipline)) {
-                    return undefined;
-                }
+        try {
+            const response = await axios.post(`/${CONTROLLER_PATH}/saveDisciplina`, model);
+            discipline = response.data;
 
-                return service.prepare(dicipline);
-            })
-            .catch((error) => {
-                if (error && error.message) {
-                    console.error(error.message);
-                }
-                return undefined;
-            });
+            if (!discipline) return undefined;
+            discipline = service.prepare(discipline);
+        } catch (error) {
+            console.error(error);
+            throw new Error('Não foi possível criar a disciplina, entre em contato com o suporte');
+        }
 
-        return dicipline;
+        return discipline;
     }
 
     static async remove(diciplineId) {

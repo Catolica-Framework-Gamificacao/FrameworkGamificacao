@@ -47,6 +47,9 @@
                                     value="Sim"
                                 ></v-switch>
                             </v-col>
+                            <v-col cols="6">
+                                <v-btn :color="$vuetify.theme.themes.dark.main" @click="linkStudents()">Alunos</v-btn>
+                            </v-col>
                         </v-row>
                     </v-container>
                 </v-form>
@@ -85,6 +88,9 @@ export default {
         },
     }),
     methods: {
+        linkStudents() {
+            console.log('link');
+        },
         resetForm() {
             this.$refs.form.resetValidation();
             this.$refs.form.reset();
@@ -104,9 +110,12 @@ export default {
                         if (error && error.message) {
                             this.$toastr.e(error.message);
                         }
+                        discipline = undefined;
                     })
                     .finally(() => {
-                        this.$emit('discipline', discipline);
+                        if (discipline) {
+                            this.$emit('discipline', discipline);
+                        }
                         this.dialog.discipline = {};
                         this.close();
                         this.resetForm();

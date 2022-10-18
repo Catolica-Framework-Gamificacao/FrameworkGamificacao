@@ -9,16 +9,18 @@
             <v-item-group>
                 <v-container>
                     <v-row>
-                        <v-col color="primary" v-for="n in subjects" :key="n" cols="12" md="4">
+                        <v-col color="primary" v-for="subject in subjects" :key="subject.uid" cols="12" md="4">
                             <v-item>
-                                <v-card
-                                    :style="{ backgroundColor: randomColor() }"
-                                    class="d-flex text-start overflow-auto"
-                                    height="100"
-                                >
-                                    <v-card-text>
-                                        <h2>Titulo da</h2>
-                                        <p>Texto da disciplina</p>
+                                <v-card :style="{ backgroundColor: randomColor() }" class="mx-auto" elevation="6">
+                                    <v-card-title>
+                                        {{ subject.name }}
+                                        <v-spacer></v-spacer>
+                                        <v-btn icon>
+                                            <v-icon @click="openEditDialog(subject.uid)">mdi-cog</v-icon>
+                                        </v-btn>
+                                    </v-card-title>
+                                    <v-card-text class="text-left">
+                                        {{ subject.description }}
                                     </v-card-text>
                                 </v-card>
                             </v-item>
@@ -26,19 +28,6 @@
                     </v-row>
                 </v-container>
             </v-item-group>
-            <v-data-table dense :headers="headers" :items="subjects" item-key="posicao" class="elevation-1">
-                <template #[`item.showOnRanking`]="{ item }">
-                    {{ item.showOnRanking ? 'Sim' : 'Não' }}
-                </template>
-                <template #[`item.actions`]="{ item }">
-                    <v-btn icon color="blue" @click="edit(item)">
-                        <v-icon dark> mdi-pencil </v-icon>
-                    </v-btn>
-                    <v-btn icon color="red" @click="remove(item.id)">
-                        <v-icon dark> mdi-delete </v-icon>
-                    </v-btn>
-                </template> </v-data-table
-            >'
         </v-container>
     </div>
 </template>
@@ -68,6 +57,9 @@ export default {
             const r = () => Math.floor(256 * Math.random());
             const total = `rgb(${r()}, ${r()}, ${100})`;
             return total;
+        },
+        openEditDialog(uid) {
+            console.log(uid);
         },
     },
 };
