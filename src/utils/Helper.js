@@ -15,4 +15,8 @@ export default class Helper {
     static isDesktop() {
         return !this.isMobile();
     }
+
+    static developmentWorkspace() {
+        return !!process.env.VUE_APP_DEVELOPMENT_MODE;
+    }
 }

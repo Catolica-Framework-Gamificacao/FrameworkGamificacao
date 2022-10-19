@@ -1,10 +1,11 @@
 import axios from 'axios';
 import UserModel from '@/models/user.model';
 import StorageUtils from '@/utils/StorageUtils';
+import Helper from '@/utils/Helper';
 
 export default class AuthService {
     static async login(credential) {
-        const development = !!process.env.VUE_APP_DEVELOPMENT_MODE;
+        const development = Helper.developmentWorkspace();
         if (!credential) {
             throw new Error('Um erro ocorreu ao tentar fazer login. Entre em contato com o suporte.');
         }
@@ -38,7 +39,7 @@ export default class AuthService {
     }
 
     static isLoggedIn() {
-        if (StorageUtils.getToken() !== null) {
+        if (Helper.developmentWorkspace() || StorageUtils.getToken() !== null) {
             return true;
         }
         const user = StorageUtils.getCurrentUser();

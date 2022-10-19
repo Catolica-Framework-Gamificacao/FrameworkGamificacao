@@ -13,6 +13,7 @@
 <script>
 import LoginForm from '@/components/authentication/LoginForm.vue';
 import AuthService from '@/services/AuthService';
+import Helper from '@/utils/Helper';
 
 export default {
     components: { LoginForm },
@@ -22,9 +23,11 @@ export default {
     methods: {
         async login(credential) {
             try {
-                const user = await AuthService.login(credential);
-                if (!user) {
-                    throw new Error('Usuário ou senha inválidos!');
+                if (!Helper.developmentWorkspace()) {
+                    const user = await AuthService.login(credential);
+                    if (!user) {
+                        throw new Error('Usuário ou senha inválidos!');
+                    }
                 }
                 this.authenticated = true;
             } catch (error) {
