@@ -45,11 +45,11 @@ const routes = [
         name: 'alunos',
         component: () => import('@/views/configuration/StudentConfiguration.vue'),
     },
-    {
-        path: '/turmas',
-        name: 'turmas',
-        component: () => import('@/views/configuration/ClassConfiguration.vue'),
-    },
+    // {
+    //     path: '/turmas',
+    //     name: 'turmas',
+    //     component: () => import('@/views/configuration/ClassConfiguration.vue'),
+    // },
     {
         path: '*',
         name: '404',
