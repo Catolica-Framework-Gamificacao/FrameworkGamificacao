@@ -1,36 +1,31 @@
 <template>
-    <v-dialog
-        v-model="showModal"
-        width="500"
-        eager
-        @click:outside="resetForm()"
-    >
+    <v-dialog v-model="showModal" width="1000" eager @click:outside="resetForm()">
         <v-card>
-            <v-toolbar
-                :color="$vuetify.theme.themes.dark.main"
-            >
+            <v-toolbar :color="$vuetify.theme.themes.dark.main">
                 <v-toolbar-title>Novo aluno</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                    <v-btn
-                        icon
-                        rounded
-                        @click="close()"
-                    >
+                    <v-btn icon rounded @click="close()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar-items>
             </v-toolbar>
 
             <v-card-text>
-                <v-form
-                    ref="form"
-                    v-model="formIsValid"
-                    lazy-validation
-                >
+                <v-form ref="form" v-model="formIsValid" lazy-validation>
                     <v-container>
                         <v-row>
-                            <v-col cols="12">
+                            <v-col cols="4">
+                                <v-text-field
+                                    :color="$vuetify.theme.themes.dark.main"
+                                    v-model="dialog.student.ra"
+                                    :rules="rules.ra"
+                                    label="RA"
+                                    hide-details="auto"
+                                    required
+                                />
+                            </v-col>
+                            <v-col cols="8">
                                 <v-text-field
                                     :color="$vuetify.theme.themes.dark.main"
                                     v-model="dialog.student.name"
@@ -40,8 +35,32 @@
                                     required
                                 />
                             </v-col>
-
-                            <v-col cols="12">
+                        </v-row>
+                        <v-row>
+                            <v-col cols="9">
+                                <v-text-field
+                                    :color="$vuetify.theme.themes.dark.main"
+                                    v-model="dialog.student.email"
+                                    :rules="rules.email"
+                                    label="E-mail"
+                                    hide-details="auto"
+                                    required
+                                />
+                            </v-col>
+                            <v-col cols="3">
+                                <v-combobox
+                                    v-model="dialog.student.situation"
+                                    :rules="rules.situation"
+                                    :items="possibleStudentSituations"
+                                    label="Situação"
+                                    outlined
+                                    dense
+                                >
+                                </v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="9">
                                 <v-select
                                     @click="resetIndexColor"
                                     :color="$vuetify.theme.themes.dark.main"
@@ -56,7 +75,10 @@
                                 >
                                     <template v-slot:item="{ active, item, attrs, on }">
                                         <v-list-item
-                                            :style="'border-radius: 30px; margin-bottom: 5px; background-color:'+ getRandomColor()"
+                                            :style="
+                                                'border-radius: 30px; margin-bottom: 5px; background-color:' +
+                                                getRandomColor()
+                                            "
                                             v-on="on"
                                             v-bind="attrs"
                                             class="font-weight-bold text-start"
@@ -70,21 +92,7 @@
                                     </template>
                                 </v-select>
                             </v-col>
-                        </v-row>
-
-                        <v-row>
-                            <v-col cols="6">
-                                <v-text-field
-                                    :color="$vuetify.theme.themes.dark.main"
-                                    v-model="dialog.student.ra"
-                                    :rules="rules.ra"
-                                    label="RA"
-                                    hide-details="auto"
-                                    required
-                                />
-                            </v-col>
-
-                            <v-col cols="6">
+                            <v-col cols="3">
                                 <v-switch
                                     v-model="dialog.student.showOnRanking"
                                     :color="$vuetify.theme.themes.dark.main"
@@ -99,23 +107,11 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                    rounded
-                    class="mb-3 mr-4"
-                    width="125"
-                    :color="$vuetify.theme.themes.dark.main"
-                    @click="close()"
-                >
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="close()">
                     <strong class="red--text text--darken-1">Cancelar</strong>
                 </v-btn>
 
-                <v-btn
-                    rounded
-                    class="mb-3 mr-4"
-                    width="125"
-                    :color="$vuetify.theme.themes.dark.main"
-                    @click="finish()"
-                >
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="finish()">
                     Adicionar
                 </v-btn>
             </v-card-actions>
@@ -147,7 +143,10 @@ export default {
             name: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome!')],
             ra: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o RA do aluno!')],
             class: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Selecione uma disciplina!')],
+            email: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o e-mail do aluno!')],
+            situation: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Selecione uma situação para o aluno!')],
         },
+        possibleStudentSituations: ['Ativo', 'Inativo', 'Bloqueado'],
     }),
     mounted() {
         this.loadClasses();
@@ -193,6 +192,7 @@ export default {
         },
 
         open() {
+            this.dialog.student.situation = 'Ativo';
             this.showModal = true;
         },
 
@@ -203,12 +203,7 @@ export default {
         },
 
         getRandomColor() {
-            const listColor = [
-                '#dc2681',
-                '#fd6300',
-                '#feb100',
-                '#628fff',
-            ];
+            const listColor = ['#dc2681', '#fd6300', '#feb100', '#628fff'];
 
             const color = listColor[indexColor];
 
