@@ -120,7 +120,6 @@
 </template>
 
 <script>
-import _ from 'lodash';
 import ClassService from '@/services/ClassService';
 import StudentService from '@/services/StudentService';
 import FormularyUtils from '@/utils/FormularyUtils';
@@ -138,7 +137,7 @@ export default {
     data: () => ({
         showModal: false,
         classes: [],
-        formIsValid: true,
+        formIsValid: false,
         rules: {
             name: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome!')],
             ra: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o RA do aluno!')],
@@ -151,11 +150,6 @@ export default {
     mounted() {
         this.loadClasses();
     },
-    computed: {
-        hasClassesAvailable() {
-            return !_.isEmpty(this.classes);
-        },
-    },
     methods: {
         resetForm() {
             this.$refs.form.resetValidation();
@@ -166,23 +160,22 @@ export default {
             let { student } = this.dialog;
             const formIsValid = this.$refs.form.validate();
 
-            if (formIsValid) {
-                StudentService.create(student)
-                    .then((newStudent) => {
-                        student = newStudent;
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        if (error && error.message) {
-                            this.$toastr.e(error.message);
-                        }
-                    })
-                    .finally(() => {
-                        this.$emit('student', student);
-                        this.dialog.student = {};
-                        this.close();
-                        this.resetForm();
-                    });
+            if (!formIsValid) {
+                this.$toastr.e('Dados do cadastro são inválidos, por favor revise!');
+            }
+
+            try {
+                student = StudentService.create(student);
+            } catch (error) {
+                console.error(error);
+                if (error && error.message) {
+                    this.$toastr.e(error.message);
+                }
+            } finally {
+                this.$emit('student', student);
+                this.dialog.student = {};
+                this.close();
+                this.resetForm();
             }
         },
 

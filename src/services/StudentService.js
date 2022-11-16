@@ -1,9 +1,11 @@
 import axios from 'axios';
 import _ from 'lodash';
 
-export default class StudentService {
-    CONTROLLER_PATH = '/Aluno';
+const CONTROLLER_PATH = '/Aluno';
 
+// random data js lib faker.js
+
+export default class StudentService {
     static prepare(student) {
         return student;
     }
@@ -12,66 +14,49 @@ export default class StudentService {
         let students = [];
         const service = this;
 
-        students = await axios
-            .get('/Aluno/getAlunos')
-            .then((response) => {
-                students = response.data;
-                if (students.length === 0 || !_.isArray(students)) {
-                    return [];
-                }
-
-                students.forEach((student) => service.prepare(student));
-
-                return students;
-            })
-            .catch((error) => {
-                if (error && error.message) {
-                    console.error(error.message);
-                }
+        try {
+            const response = await axios.get(`/${CONTROLLER_PATH}/getAlunos`);
+            students = response.data;
+            if (!students || students.length === 0 || !_.isArray(students)) {
                 return [];
-            });
+            }
+            students.forEach((student) => service.prepare(student));
+        } catch (error) {
+            console.error(error);
+            return [];
+        }
 
         return students;
     }
 
     static async create(model) {
-        let student;
+        let student = null;
         const service = this;
 
-        student = await axios
-            .post('/Aluno/saveAluno', model)
-            .then((response) => {
-                student = response.data;
-                if (student.length === 0 || !_.isArray(student)) {
-                    return undefined;
-                }
-
-                return service.prepare(student);
-            })
-            .catch((error) => {
-                if (error && error.message) {
-                    console.error(error.message);
-                }
-                return undefined;
-            });
+        try {
+            const response = await axios.post(`/${CONTROLLER_PATH}/saveAluno`, model);
+            if (response.data === null || response.data === undefined) {
+                throw new Error('Error: Null Response');
+            }
+            student = service.prepare(response.data);
+        } catch (error) {
+            console.error(error);
+            throw new Error('Não foi possível cadastrar o aluno, entre em contato com o suporte!');
+        }
 
         return student;
     }
 
-    static async remove(studentId) {
-        let affecteds = await axios
-            .delete(`/Aluno/deleteAluno/${studentId}`)
-            .then((response) => {
-                affecteds = response.data;
-                console.log(affecteds);
-                return affecteds;
-            })
-            .catch((error) => {
-                if (error && error.message) {
-                    console.error(error.message);
-                }
-            });
-        return affecteds !== null;
+    static async remove(id) {
+        let deleted = false;
+        try {
+            const response = await axios.delete(`/${CONTROLLER_PATH}/deleteAluno/${id}`);
+            const affecteds = response.data;
+            deleted = affecteds !== null;
+        } catch (error) {
+            console.error(error);
+        }
+        return deleted;
     }
 
     static async update(student) {
