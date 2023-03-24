@@ -1,51 +1,70 @@
 <template>
-    <v-dialog
-        v-model="showModal"
-        width="500"
-        eager
-        @click:outside="resetForm()"
-    >
+    <v-dialog v-model="showModal" width="1000" eager @click:outside="resetForm()">
         <v-card>
-            <v-toolbar
-                :color="$vuetify.theme.themes.dark.main"
-            >
+            <v-toolbar :color="$vuetify.theme.themes.dark.main">
                 <v-toolbar-title>Novo aluno</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                    <v-btn
-                        icon
-                        rounded
-                        @click="close()"
-                    >
+                    <v-btn icon rounded @click="close()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </v-toolbar-items>
             </v-toolbar>
 
             <v-card-text>
-                <v-form
-                    ref="form"
-                    v-model="formIsValid"
-                    lazy-validation
-                >
+                <v-form ref="form" v-model="formIsValid" lazy-validation>
                     <v-container>
                         <v-row>
-                            <v-col cols="12">
+                            <v-col cols="4">
                                 <v-text-field
                                     :color="$vuetify.theme.themes.dark.main"
-                                    v-model="dialog.student.name"
+                                    v-model="student.ra"
+                                    :rules="rules.ra"
+                                    label="RA"
+                                    hide-details="auto"
+                                    required
+                                />
+                            </v-col>
+                            <v-col cols="8">
+                                <v-text-field
+                                    :color="$vuetify.theme.themes.dark.main"
+                                    v-model="student.name"
                                     :rules="rules.name"
                                     label="Nome"
                                     hide-details="auto"
                                     required
                                 />
                             </v-col>
-
-                            <v-col cols="12">
+                        </v-row>
+                        <v-row>
+                            <v-col cols="9">
+                                <v-text-field
+                                    :color="$vuetify.theme.themes.dark.main"
+                                    v-model="student.email"
+                                    :rules="rules.email"
+                                    label="E-mail"
+                                    hide-details="auto"
+                                    required
+                                />
+                            </v-col>
+                            <v-col cols="3">
+                                <v-combobox
+                                    v-model="student.situation"
+                                    :rules="rules.situation"
+                                    :items="possibleStudentSituations"
+                                    label="Situação"
+                                    outlined
+                                    dense
+                                >
+                                </v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="9">
                                 <v-select
                                     @click="resetIndexColor"
                                     :color="$vuetify.theme.themes.dark.main"
-                                    v-model="dialog.student.class"
+                                    v-model="student.class"
                                     :rules="rules.class"
                                     :items="classes"
                                     label="Disciplina"
@@ -56,7 +75,10 @@
                                 >
                                     <template v-slot:item="{ active, item, attrs, on }">
                                         <v-list-item
-                                            :style="'border-radius: 30px; margin-bottom: 5px; background-color:'+ getRandomColor()"
+                                            :style="
+                                                'border-radius: 30px; margin-bottom: 5px; background-color:' +
+                                                getRandomColor()
+                                            "
                                             v-on="on"
                                             v-bind="attrs"
                                             class="font-weight-bold text-start"
@@ -70,23 +92,9 @@
                                     </template>
                                 </v-select>
                             </v-col>
-                        </v-row>
-
-                        <v-row>
-                            <v-col cols="6">
-                                <v-text-field
-                                    :color="$vuetify.theme.themes.dark.main"
-                                    v-model="dialog.student.ra"
-                                    :rules="rules.ra"
-                                    label="RA"
-                                    hide-details="auto"
-                                    required
-                                />
-                            </v-col>
-
-                            <v-col cols="6">
+                            <v-col cols="3">
                                 <v-switch
-                                    v-model="dialog.student.showOnRanking"
+                                    v-model="student.showOnRanking"
                                     :color="$vuetify.theme.themes.dark.main"
                                     label="Exibir no Ranking"
                                     value="Sim"
@@ -99,23 +107,11 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn
-                    rounded
-                    class="mb-3 mr-4"
-                    width="125"
-                    :color="$vuetify.theme.themes.dark.main"
-                    @click="close()"
-                >
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="close()">
                     <strong class="red--text text--darken-1">Cancelar</strong>
                 </v-btn>
 
-                <v-btn
-                    rounded
-                    class="mb-3 mr-4"
-                    width="125"
-                    :color="$vuetify.theme.themes.dark.main"
-                    @click="finish()"
-                >
+                <v-btn rounded class="mb-3 mr-4" width="125" :color="$vuetify.theme.themes.dark.main" @click="finish()">
                     Adicionar
                 </v-btn>
             </v-card-actions>
@@ -124,7 +120,6 @@
 </template>
 
 <script>
-import _ from 'lodash';
 import ClassService from '@/services/ClassService';
 import StudentService from '@/services/StudentService';
 import FormularyUtils from '@/utils/FormularyUtils';
@@ -133,29 +128,22 @@ let indexColor = 0;
 
 export default {
     name: 'StudentRegisterModal',
-    props: {
-        dialog: {
-            type: Object,
-            required: true,
-        },
-    },
     data: () => ({
         showModal: false,
         classes: [],
-        formIsValid: true,
+        formIsValid: false,
+        student: {},
         rules: {
             name: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome!')],
             ra: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o RA do aluno!')],
             class: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Selecione uma disciplina!')],
+            email: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o e-mail do aluno!')],
+            situation: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Selecione uma situação para o aluno!')],
         },
+        possibleStudentSituations: ['Ativo', 'Inativo', 'Bloqueado'],
     }),
     mounted() {
         this.loadClasses();
-    },
-    computed: {
-        hasClassesAvailable() {
-            return !_.isEmpty(this.classes);
-        },
     },
     methods: {
         resetForm() {
@@ -163,27 +151,26 @@ export default {
             this.$refs.form.reset();
         },
 
-        finish() {
-            let { student } = this.dialog;
+        async finish() {
+            let { student } = this.student;
             const formIsValid = this.$refs.form.validate();
 
-            if (formIsValid) {
-                StudentService.create(student)
-                    .then((newStudent) => {
-                        student = newStudent;
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        if (error && error.message) {
-                            this.$toastr.e(error.message);
-                        }
-                    })
-                    .finally(() => {
-                        this.$emit('student', student);
-                        this.dialog.student = {};
-                        this.close();
-                        this.resetForm();
-                    });
+            if (!formIsValid) {
+                this.$toastr.e('Dados do cadastro são inválidos, por favor revise!');
+            }
+
+            try {
+                student = await StudentService.create(student);
+            } catch (error) {
+                console.error(error);
+                if (error && error.message) {
+                    this.$toastr.e(error.message);
+                }
+            } finally {
+                this.$emit('student', student);
+                this.student = {};
+                this.close();
+                this.resetForm();
             }
         },
 
@@ -193,6 +180,7 @@ export default {
         },
 
         open() {
+            this.student.situation = 'Ativo';
             this.showModal = true;
         },
 
@@ -203,12 +191,7 @@ export default {
         },
 
         getRandomColor() {
-            const listColor = [
-                '#dc2681',
-                '#fd6300',
-                '#feb100',
-                '#628fff',
-            ];
+            const listColor = ['#dc2681', '#fd6300', '#feb100', '#628fff'];
 
             const color = listColor[indexColor];
 

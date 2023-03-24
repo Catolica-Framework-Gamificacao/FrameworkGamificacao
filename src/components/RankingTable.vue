@@ -7,7 +7,15 @@
             </v-col>
         </v-row>
     </div>
-    <v-data-table v-else dense :headers="headers" :items="items" item-key="posicao" class="elevation-1"></v-data-table>
+    <v-data-table
+        v-else
+        dense
+        :headers="headers"
+        :items="items"
+        item-key="position"
+        class="elevation-1"
+        :items-per-page="20"
+    ></v-data-table>
 </template>
 <script>
 import _ from 'lodash';
