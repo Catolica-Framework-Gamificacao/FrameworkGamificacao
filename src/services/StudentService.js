@@ -1,9 +1,9 @@
 import axios from 'axios';
 import _ from 'lodash';
+import Helper from '@/utils/Helper';
+import StudentUtils from '@/utils/StudentUtils';
 
 const CONTROLLER_PATH = '/Aluno';
-
-// random data js lib faker.js
 
 export default class StudentService {
     static prepare(student) {
@@ -13,7 +13,11 @@ export default class StudentService {
     static async loadData() {
         let students = [];
         const service = this;
-
+        if (Helper.developmentWorkspace()) {
+            return new Promise((resolve) => {
+                resolve(StudentUtils.loadFakeStudentsList());
+            });
+        }
         try {
             const response = await axios.get(`/${CONTROLLER_PATH}/getAlunos`);
             students = response.data;

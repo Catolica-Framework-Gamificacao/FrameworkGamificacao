@@ -1,5 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
+import Helper from '@/utils/Helper';
+import RankingUtils from '@/utils/RankingUtils';
 
 export default class RankingService {
     PATH = '/ranking';
@@ -11,6 +13,12 @@ export default class RankingService {
     static async loadData() {
         let ranking = [];
         const service = this;
+
+        if (Helper.developmentWorkspace()) {
+            return new Promise((resolve) => {
+                resolve(RankingUtils.loadFakeRankingList());
+            });
+        }
 
         ranking = await axios
             .get(service.PATH)

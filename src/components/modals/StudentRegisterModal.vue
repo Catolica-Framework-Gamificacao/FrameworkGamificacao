@@ -18,7 +18,7 @@
                             <v-col cols="4">
                                 <v-text-field
                                     :color="$vuetify.theme.themes.dark.main"
-                                    v-model="dialog.student.ra"
+                                    v-model="student.ra"
                                     :rules="rules.ra"
                                     label="RA"
                                     hide-details="auto"
@@ -28,7 +28,7 @@
                             <v-col cols="8">
                                 <v-text-field
                                     :color="$vuetify.theme.themes.dark.main"
-                                    v-model="dialog.student.name"
+                                    v-model="student.name"
                                     :rules="rules.name"
                                     label="Nome"
                                     hide-details="auto"
@@ -40,7 +40,7 @@
                             <v-col cols="9">
                                 <v-text-field
                                     :color="$vuetify.theme.themes.dark.main"
-                                    v-model="dialog.student.email"
+                                    v-model="student.email"
                                     :rules="rules.email"
                                     label="E-mail"
                                     hide-details="auto"
@@ -49,7 +49,7 @@
                             </v-col>
                             <v-col cols="3">
                                 <v-combobox
-                                    v-model="dialog.student.situation"
+                                    v-model="student.situation"
                                     :rules="rules.situation"
                                     :items="possibleStudentSituations"
                                     label="Situação"
@@ -64,7 +64,7 @@
                                 <v-select
                                     @click="resetIndexColor"
                                     :color="$vuetify.theme.themes.dark.main"
-                                    v-model="dialog.student.class"
+                                    v-model="student.class"
                                     :rules="rules.class"
                                     :items="classes"
                                     label="Disciplina"
@@ -94,7 +94,7 @@
                             </v-col>
                             <v-col cols="3">
                                 <v-switch
-                                    v-model="dialog.student.showOnRanking"
+                                    v-model="student.showOnRanking"
                                     :color="$vuetify.theme.themes.dark.main"
                                     label="Exibir no Ranking"
                                     value="Sim"
@@ -128,16 +128,11 @@ let indexColor = 0;
 
 export default {
     name: 'StudentRegisterModal',
-    props: {
-        dialog: {
-            type: Object,
-            required: true,
-        },
-    },
     data: () => ({
         showModal: false,
         classes: [],
         formIsValid: false,
+        student: {},
         rules: {
             name: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o nome!')],
             ra: [FormularyUtils.validadeNotEmptyRuleOrThrowMessage('Preencha o RA do aluno!')],
@@ -156,8 +151,8 @@ export default {
             this.$refs.form.reset();
         },
 
-        finish() {
-            let { student } = this.dialog;
+        async finish() {
+            let { student } = this.student;
             const formIsValid = this.$refs.form.validate();
 
             if (!formIsValid) {
@@ -165,7 +160,7 @@ export default {
             }
 
             try {
-                student = StudentService.create(student);
+                student = await StudentService.create(student);
             } catch (error) {
                 console.error(error);
                 if (error && error.message) {
@@ -173,7 +168,7 @@ export default {
                 }
             } finally {
                 this.$emit('student', student);
-                this.dialog.student = {};
+                this.student = {};
                 this.close();
                 this.resetForm();
             }
@@ -185,7 +180,7 @@ export default {
         },
 
         open() {
-            this.dialog.student.situation = 'Ativo';
+            this.student.situation = 'Ativo';
             this.showModal = true;
         },
 

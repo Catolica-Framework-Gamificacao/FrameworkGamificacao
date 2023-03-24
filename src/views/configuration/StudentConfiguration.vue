@@ -3,7 +3,7 @@
         <v-col cols="12">
             <v-row>
                 <v-col cols="9">
-                    <v-text-field v-model="filters.studentName" label="Aluno" @input="filter()"></v-text-field>
+                    <v-text-field v-model="filters.name" label="Aluno" @input="filter()"></v-text-field>
                 </v-col>
                 <v-col cols="3">
                     <v-container fluid>
@@ -16,7 +16,7 @@
             <StudentList :students="filteredStudents"></StudentList>
         </v-col>
 
-        <StudentRegisterModal ref="modalStudent" :dialog="addNewStudentDialog" @student="newStudent = $event"/>
+        <StudentRegisterModal ref="modalStudent" @student="newStudent = $event" />
     </v-row>
 </template>
 
@@ -24,6 +24,7 @@
 import StudentList from '@/components/StudentList.vue';
 import StudentRegisterModal from '@/components/modals/StudentRegisterModal.vue';
 import StudentService from '@//services/StudentService';
+import StudentUtils from '@/utils/StudentUtils';
 
 export default {
     name: 'StudentConfiguration',
@@ -34,6 +35,7 @@ export default {
     watch: {
         newStudent(newStudent, oldStudent) {
             if (newStudent && newStudent !== oldStudent) {
+                console.log(newStudent);
                 return this.students.push(newStudent);
             }
             return newStudent;
@@ -47,32 +49,26 @@ export default {
     },
     data: () => ({
         filters: {
-            studentName: '',
+            name: '',
         },
         students: [],
         filteredStudents: [],
         newStudent: {},
-        addNewStudentDialog: {
-            student: {
-                ra: undefined,
-                name: undefined,
-                showOnRanking: true,
-                class: undefined,
-                points: 0,
-            },
-        },
     }),
     methods: {
         filter() {
             this.filteredStudents = this.students;
         },
         openAddNewStudentDialog() {
-            this.$refs.modalStudent.open();
+            StudentUtils.openRegisterModal(this.$refs.modalStudent);
         },
-        loadStudentsList() {
-            StudentService.loadData().then((students) => {
-                this.students = students;
-            });
+        async loadStudentsList() {
+            try {
+                this.students = await StudentService.loadData();
+            } catch (error) {
+                console.error(error);
+                this.students = [];
+            }
         },
     },
 };
